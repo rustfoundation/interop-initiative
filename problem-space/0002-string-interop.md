@@ -27,7 +27,10 @@ However, maintaining consistent semantics across all string operations is challe
 ## Related Problems
 [related-problems]: #related-problems
 
-Creating and modifying strings at runtime depends on [correct memory allocation and deallocation](0001-incompatible-allocators.md).
+Creating and modifying strings at runtime depends on:
+
+- [correct memory allocation and deallocation](0001-incompatible-allocators.md)
+- [compatible type layouts](0003-type-layout.md), or marshalling data using FFI glue
 
 String APIs use vectors and iterators, so they inherit most vector and iterator interoperability problems.
 
