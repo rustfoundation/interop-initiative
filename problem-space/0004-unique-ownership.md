@@ -11,7 +11,11 @@ Rust and C++ have different unique ownership concepts.
 In Rust, unique ownership is enforced by the compiler on most non-reference types, but there are multiple ways to opt-out (including `Copy` and various `unsafe` APIs).
 In C++, ownership can be managed using `unique_ptr`, but significant amounts of code handle ownership implicitly.
 
-Passing a C++ `unique_ptr` to Rust, or obtaining one from an owned Rust value, needs to handle the semantic and API differences between the languages.  
+Passing a C++ `unique_ptr` to Rust, or obtaining one from an owned Rust value, needs to handle the semantic and API differences between the languages.
+For example, Zngur does this using `Ref` and `RefMut` types.
+
+Some (all?) FFI tools limit C++ types on the Rust stack, due to destructive moves. Fixing this might require language changes.
+Some users might benefit from custom move operation support in Rust.
 
 ## Related Problems
 [related-problems]: #related-problems
