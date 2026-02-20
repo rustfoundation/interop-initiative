@@ -19,11 +19,15 @@ Does solving this problem conflict with other problems?
 ## Impact
 [impact]: #impact
 
-Focus on clearly defining the Rust and C++ interoperability problem, and its impact on developers.
-It should be factual, informative, and uncontroversial, supported by expert opinion.
+Focus on clearly defining the Rust and C++ interoperability problem, and its impact on developers:
+
+- It should be factual and informative, describing relevant alternatives.
+- Problems should be supported by expert opinions.
+- If there is controversy about the problem itself, describe competing ideas in a neutral way.
 
 This section should explain the problem in detail, including necessary background.
 It should also contain several specific use cases where users encounter this problem.
+If there are significant workarounds, list them, and their drawbacks.
 
 This section is one of the most important sections of the problem statement, and can be lengthy.
 
