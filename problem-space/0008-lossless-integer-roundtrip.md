@@ -43,13 +43,13 @@ Preferably all const-compatible.
 ### Currently Lossy Types
 [currently-lossy-types]: #currently-lossy-types
 
-*TODO:* double-check this categorisation
+TODO: double-check this categorisation
 
 Solutions should handle (or explain why handling these types isn't needed):
 
 - Rust's `std::ffi` uses `i8` for [`c_char`](https://doc.rust-lang.org/stable/std/ffi/type.c_char.html), but Crubit uses [`u8`](https://docs.rs/ffi_11/latest/ffi_11/struct.c_char.html)
 - Requiring C++ `uint8_t` to be `unsigned char` (?)
-- *TODO:* add extra examples here
+- TODO: add extra examples here
 
 On Windows:
 
@@ -65,4 +65,39 @@ These types might not be relevant to interop:
 - C++ `std::byte`, which is similar to `MaybeUninit<u8>`
 - GCC targets where `size_t` is `unsigned __int20` and `int` is `i32` (not supported by Rust)
 
-*TODO:* fill in the rest of the template (during the detail phase)
+TODO: fill in the remainder of this section
+
+## Impact
+[impact]: #impact
+
+TODO
+
+## Guide-level explanation
+[guide-level-explanation]: #guide-level-explanation
+
+TODO
+
+## Reference-level explanation
+[reference-level-explanation]: #reference-level-explanation
+
+TODO
+
+## Prior art
+[prior-art]: #prior-art
+
+TODO
+
+## Further Background
+[further-background]: #further-background
+
+TODO
+
+## Experts & Champions
+[experts--champions]: #experts--champions
+
+TODO
+
+## Unresolved questions
+[unresolved-questions]: #unresolved-questions
+
+TODO

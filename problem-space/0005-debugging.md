@@ -22,10 +22,7 @@ Debugging requires:
 - code patching for mixed binaries
 - compatibility with existing logging solutions
 
-*TODO:* fill in the remainder of this section
-
-Is it part of a larger group of problems?
-Does solving this problem conflict with other problems?
+TODO: fill in the remainder of this section
 
 ## Impact
 [impact]: #impact
@@ -41,4 +38,39 @@ The following impacts have been reported by users:
 - Post-mortem debugging needs stack traces to show up, regardless of language
   - Rust standard library does not fall back to the symbol table if DWARF debug info is absent
 
-*TODO:* fill in the rest of the template (during the detail phase)
+TODO: fill in the remainder of this section
+
+## Guide-level explanation
+[guide-level-explanation]: #guide-level-explanation
+
+TODO
+
+## Reference-level explanation
+[reference-level-explanation]: #reference-level-explanation
+
+TODO
+
+## Acceptance Criteria
+[acceptance-criteria]: #acceptance-criteria
+
+TODO
+
+## Prior art
+[prior-art]: #prior-art
+
+TODO
+
+## Further Background
+[further-background]: #further-background
+
+TODO
+
+## Experts & Champions
+[experts--champions]: #experts--champions
+
+TODO
+
+## Unresolved questions
+[unresolved-questions]: #unresolved-questions
+
+TODO
