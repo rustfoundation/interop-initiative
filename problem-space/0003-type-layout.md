@@ -20,8 +20,44 @@ This problem is related to:
 
 - cross-language build coordination
 
-*TODO:* fill in the remainder of this section, and the rest of the template (during the detail phase)
+TODO: fill in the remainder of this section
 
-Does this problem depend on any other problems being solved first? Do other problems depend on it?
-Is it part of a larger group of problems?
-Does solving this problem conflict with other problems?
+## Impact
+[impact]: #impact
+
+TODO
+
+## Guide-level explanation
+[guide-level-explanation]: #guide-level-explanation
+
+TODO
+
+## Reference-level explanation
+[reference-level-explanation]: #reference-level-explanation
+
+TODO
+
+## Acceptance Criteria
+[acceptance-criteria]: #acceptance-criteria
+
+TODO
+
+## Prior art
+[prior-art]: #prior-art
+
+TODO
+
+## Further Background
+[further-background]: #further-background
+
+TODO
+
+## Experts & Champions
+[experts--champions]: #experts--champions
+
+TODO
+
+## Unresolved questions
+[unresolved-questions]: #unresolved-questions
+
+TODO

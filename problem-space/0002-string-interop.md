@@ -34,10 +34,7 @@ Creating and modifying strings at runtime depends on:
 
 String APIs use vectors and iterators, so they inherit most vector and iterator interoperability problems.
 
-*TODO:* fill in the remainder of this section
-
-Is it part of a larger group of problems?
-Does solving this problem conflict with other problems?
+TODO: fill in the remainder of this section
 
 ## Acceptance Criteria
 [acceptance-criteria]: #acceptance-criteria
@@ -54,4 +51,39 @@ For some Windows use cases, solutions may also need to handle:
 
 - C/C++ UTF-16 formats (using wide character types)
 
-*TODO:* fill in the rest of the template (during the detail phase)
+TODO: fill in the remainder of this section
+
+## Impact
+[impact]: #impact
+
+TODO
+
+## Guide-level explanation
+[guide-level-explanation]: #guide-level-explanation
+
+TODO
+
+## Reference-level explanation
+[reference-level-explanation]: #reference-level-explanation
+
+TODO
+
+## Prior art
+[prior-art]: #prior-art
+
+TODO
+
+## Further Background
+[further-background]: #further-background
+
+TODO
+
+## Experts & Champions
+[experts--champions]: #experts--champions
+
+TODO
+
+## Unresolved questions
+[unresolved-questions]: #unresolved-questions
+
+TODO
