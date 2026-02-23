@@ -9,6 +9,13 @@
 
 One paragraph explanation of the problem that users of Rust with C++ are having.
 
+### Example Code
+[example-code]: #example-code
+
+This section should contain short snippets of Rust and C++ code, that clearly illustrate the problem.
+Ideally, this is code where developers typically encounter the issue.
+(Code for alternative cases and edge cases belongs in the explanation sections.)
+
 ## Related Problems
 [related-problems]: #related-problems
 

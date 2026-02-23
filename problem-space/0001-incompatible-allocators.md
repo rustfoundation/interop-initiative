@@ -15,6 +15,11 @@ This happens when ownership is passed from Rust to C++, then the memory is deall
 
 FFI safety documentation often focuses on ensuring the same layout in Rust and C++. But deallocation also needs to be compatible for soundness.
 
+### Example Code
+[example-code]: #example-code
+
+TODO
+
 ## Related Problems
 [related-problems]: #related-problems
 

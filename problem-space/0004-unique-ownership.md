@@ -17,6 +17,11 @@ For example, Zngur does this using `Ref` and `RefMut` types.
 Some (all?) FFI tools limit C++ types on the Rust stack, due to destructive moves. Fixing this might require language changes.
 Some users might benefit from custom move operation support in Rust.
 
+### Example Code
+[example-code]: #example-code
+
+TODO
+
 ## Related Problems
 [related-problems]: #related-problems
 

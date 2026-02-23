@@ -24,6 +24,11 @@ On the C++ side, the situation is similar, many APIs take `string` or `string_vi
 But other APIs take the `basic_string` or `basic_string_view` templates, which could technically wrap Rust UTF-8 strings.
 However, maintaining consistent semantics across all string operations is challenging, particularly for writeable strings.
 
+### Example Code
+[example-code]: #example-code
+
+TODO
+
 ## Related Problems
 [related-problems]: #related-problems
 

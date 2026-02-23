@@ -13,6 +13,11 @@ Different ABIs can lead to different type layouts in memory, including size, ali
 Using the same layout in Rust and C++ enables zero-overhead data access, which is important for performance-sensitive use cases.
 Mismatching layouts can lead to unsoundness, if data is not marshalled using the correct FFI glue code.
 
+### Example Code
+[example-code]: #example-code
+
+TODO
+
 ## Related Problems
 [related-problems]: #related-problems
 
