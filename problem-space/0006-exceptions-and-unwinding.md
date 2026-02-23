@@ -18,6 +18,11 @@ Different projects handle this in different ways:
 
 Making Rust panics into C++ exceptions generates too much complexity, even though some C++ ABIs (Itanium) support C++ catching foreign exceptions.
 
+### Example Code
+[example-code]: #example-code
+
+TODO
+
 ## Related Problems
 [related-problems]: #related-problems
 

@@ -13,6 +13,11 @@ Many interop users would benefit from lossless roundtrips between Rust and C++. 
 
 In Rust, the set of conversions available with `Into` is a subset(?) of lossless(?) `as` casts.
 
+### Example Code
+[example-code]: #example-code
+
+TODO
+
 ## Related Problems
 [related-problems]: #related-problems
 

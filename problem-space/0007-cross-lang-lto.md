@@ -24,6 +24,11 @@ Currently, the FFI boundary stops compilers taking advantage of some undefined b
 During LTO, this existing undefined behaviour [might be triggered](https://arxiv.org/pdf/2404.11671).
 This is a bug in the code with undefined behaviour, rather than the compilers.
 
+### Example Code
+[example-code]: #example-code
+
+TODO
+
 ## Related Problems
 [related-problems]: #related-problems
 

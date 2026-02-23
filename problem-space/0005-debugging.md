@@ -12,6 +12,11 @@ The quality of debug information in mixed Rust/C++ projects is low, leading to d
 Rust uses C++-style debug info to interact with some debuggers, but this has drawbacks where the language semantics are different.
 Less debugging is required for pure Rust projects, but when mixing Rust with C++, it is used a lot more.
 
+### Example Code
+[example-code]: #example-code
+
+TODO
+
 ## Related Problems
 [related-problems]: #related-problems
 
