@@ -18,7 +18,52 @@ FFI safety documentation often focuses on ensuring the same layout in Rust and C
 ### Example Code
 [example-code]: #example-code
 
-TODO
+This Rust code passes ownership of a Rust heap-allocated array pointer, then tries to deallocate it using C++.
+This is undefined behaviour, and in practice, it may attempt to deallocate the wrong amount of memory, or the wrong pointer.
+(If the allocator prefix metadata is a different length.)
+
+```rust
+unsafe extern "C" {
+    fn take_ownership_in_cplusplus(pointer: *mut u32, length: usize);
+}
+
+unsafe fn pass_ownership_to_cplusplus(list: Box<[u32; 7]>) {
+    let pointer = Box::into_raw(list);
+    // SAFETY:
+    // - The layout is guaranteed to be `*mut [u32; 7]`, which is guaranteed to be `*mut u32`.
+    // - C++ must deallocate this memory like Rust `Layout::array::<u32>(length)`.
+    unsafe { take_ownership_in_cplusplus(pointer as *mut u32, 7); };
+}
+```
+
+The actual deallocation length is taken from allocator metadata, which might not be at the same offset in different allocators.
+(If the allocators are compatible, this might be defined behavior in practice.)
+
+```c++
+#include <cstddef>
+#include <cstdint>
+#include <cstdlib>
+
+void take_ownership_in_cplusplus(uint32_t* pointer, size_t length) {
+    // do_something_with(pointer, length);
+
+    // Undefined behaviour: deallocates memory that was not allocated with `operator new`.
+    // The length hint is ignored by default.
+    ::operator delete(pointer, length * sizeof(*pointer));
+}
+```
+
+The always-correct way to deallocate is to call:
+
+```rust
+unsafe fn pass_ownership_to_rust(pointer: *mut u32, length: usize) {
+    assert_eq!(length, 7);
+    // SAFETY:
+    // - Allocated using Rust's Global allocator, using the same layout.
+    let list = unsafe { Box::<[u32; 7]>::from_raw(pointer as *mut [u32; 7]) };
+    std::mem::drop(list);
+}
+```
 
 ## Related Problems
 [related-problems]: #related-problems
@@ -39,6 +84,19 @@ TODO
 [guide-level-explanation]: #guide-level-explanation
 
 TODO
+
+Needs to cover (or declare out of scope) these alternative/edge cases:
+
+```c++
+    // Undefined behaviour: deallocates memory that was not allocated with malloc, calloc, or realloc.
+    // Likely to deallocate the wrong amount of memory, because it doesn't know the length.
+    free(pointer);
+
+    // Undefined behaviour: deallocates memory that was not allocated with `operator new[]`.
+    // Typically, reads `size_t` bytes before the allocation to determine the array size.
+    // Likely to deallocate the wrong amount of memory (the length hint is ignored by default).
+    ::operator[] delete(pointer, length * sizeof(*pointer));
+```
 
 ## Reference-level explanation
 [reference-level-explanation]: #reference-level-explanation
