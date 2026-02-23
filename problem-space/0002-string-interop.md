@@ -27,7 +27,37 @@ However, maintaining consistent semantics across all string operations is challe
 ### Example Code
 [example-code]: #example-code
 
-TODO
+This Rust code passes a read-only Rust string to C++:
+
+```rust
+use std::ffi::CStr;
+
+unsafe extern "C" {
+    fn use_string_in_cplusplus(pointer: *const u8, length: usize);
+}
+
+unsafe fn pass_string_to_cplusplus(cstr: &'static CStr) {
+    let length = cstr.count_bytes();
+    let pointer = cstr.as_ptr();
+    // SAFETY:
+    // - The pointer must not be read after Rust has deallocated or moved the string, or beyond `length + 1` (the `nul` byte).
+    // - The pointer must never be written to.
+    unsafe { use_string_in_cplusplus(pointer, length); };
+}
+```
+
+The C++ code constructs a `std::string` by copying `length` bytes into a new allocation, which is an unacceptable performance trade-off for some use cases:
+
+```c++
+#include <cstdint>
+#include <string>
+
+void use_string_in_cplusplus(const uint8_t* pointer, size_t length) {
+    auto cppstr = std::string((const char *)pointer, length);
+
+    // do_something_with(cppstr);
+}
+```
 
 ## Related Problems
 [related-problems]: #related-problems
@@ -35,6 +65,7 @@ TODO
 Creating and modifying strings at runtime depends on:
 
 - [correct memory allocation and deallocation](0001-incompatible-allocators.md)
+- compatible object lifetimes
 - [compatible type layouts](0003-type-layout.md), or marshalling data using FFI glue
 
 String APIs use vectors and iterators, so they inherit most vector and iterator interoperability problems.
@@ -46,6 +77,7 @@ TODO: fill in the remainder of this section
 
 Solutions should also handle (or explain why handling these types isn't needed):
 
+- Rust/C++ string mutation
 - Rust `OsString`
 - Rust `CString` (potentially trivially)
 - C/C++ `char *`, including `const`, `signed` and `unsigned`

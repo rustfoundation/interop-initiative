@@ -32,6 +32,7 @@ unsafe fn pass_ownership_to_cplusplus(list: Box<[u32; 7]>) {
     // SAFETY:
     // - The layout is guaranteed to be `*mut [u32; 7]`, which is guaranteed to be `*mut u32`.
     // - C++ must deallocate this memory like Rust `Layout::array::<u32>(length)`.
+    // Note: using `<*mut [T]>::as_mut_ptr` ensures type safety, but as of February 2026, it is behind the `slice_ptr_get` nightly feature.
     unsafe { take_ownership_in_cplusplus(pointer as *mut u32, 7); };
 }
 ```
