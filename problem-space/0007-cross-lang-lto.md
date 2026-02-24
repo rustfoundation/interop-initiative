@@ -22,7 +22,7 @@ For example:
 
 Currently, the FFI boundary stops compilers taking advantage of some undefined behaviour (that is, it is not detected, so it doesn't cause any issues).
 During LTO, this existing undefined behaviour [might be triggered](https://arxiv.org/pdf/2404.11671).
-This is a bug in the code with undefined behaviour, rather than the compilers.
+This is technically a bug in the code with undefined behaviour, rather than the compilers, but tools can assist developers to detect and avoid issues.
 
 ### Example Code
 [example-code]: #example-code
@@ -75,7 +75,9 @@ TODO
 ## Experts & Champions
 [experts--champions]: #experts--champions
 
-TODO
+David Sankel: cross-language LTO is an important problem to get solved.
+
+TODO: fill in the remainder of this section
 
 ## Unresolved questions
 [unresolved-questions]: #unresolved-questions

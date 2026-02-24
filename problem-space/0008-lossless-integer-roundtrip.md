@@ -144,7 +144,9 @@ TODO
 ## Experts & Champions
 [experts--champions]: #experts--champions
 
-TODO
+David Sankel: having a standard integer mapping would be very useful.
+
+TODO: fill in the remainder of this section
 
 ## Unresolved questions
 [unresolved-questions]: #unresolved-questions
