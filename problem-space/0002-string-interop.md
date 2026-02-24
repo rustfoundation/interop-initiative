@@ -27,7 +27,7 @@ However, maintaining consistent semantics across all string operations is challe
 ### Example Code
 [example-code]: #example-code
 
-This Rust code passes a read-only Rust string to C++:
+This Rust code passes a read-only Rust string pointer to C++:
 
 ```rust
 use std::ffi::CStr;
@@ -46,7 +46,7 @@ unsafe fn pass_string_to_cplusplus(cstr: &'static CStr) {
 }
 ```
 
-The C++ code constructs a `std::string` by copying `length` bytes into a new allocation, which is an unacceptable performance trade-off for some use cases:
+The C++ code constructs a `std::string` by copying `length` bytes from the Rust pointer into a new allocation, which is an unacceptable performance trade-off for some use cases:
 
 ```c++
 #include <cstdint>

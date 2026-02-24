@@ -22,7 +22,45 @@ Some users might benefit from custom move operation support in Rust.
 ### Example Code
 [example-code]: #example-code
 
-TODO
+This C++ code passes a read-write C++ string object to Rust:
+
+```c++
+#include <string>
+#include <cstring>
+#include <cassert>
+
+extern "C" {
+    extern const size_t SIZE_OF_CPP_STRING;
+
+    void use_string_in_rust(std::basic_string<char> cppstr);
+}
+
+void pass_string_to_rust(const char *cstr) {
+    auto cppstr = std::string(cstr, strlen(cstr));
+
+    // Required for FFI safety by Rust, but fails at compile time
+    //static_assert(std::is_trivially_move_constructible_v<typeof(cppstr)>);
+    assert(sizeof(cppstr) == SIZE_OF_CPP_STRING);
+
+    use_string_in_rust(cppstr);
+}
+```
+
+But as soon as Rust moves the C++ string, it is undefined behaviour:
+
+```rust
+static SIZE_OF_CPP_STRING: usize = 32;
+
+#[repr(C)]
+struct CppString {
+    data: [u8; SIZE_OF_CPP_STRING],
+}
+
+unsafe fn use_string_in_rust(cppstr: CppString) {
+    // Undefined behaviour: `string` is not trivially move constructible in C++
+    let moved_cppstr = cppstr;
+}
+```
 
 ## Related Problems
 [related-problems]: #related-problems
