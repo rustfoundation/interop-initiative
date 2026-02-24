@@ -14,7 +14,9 @@ In C++, ownership can be managed using `unique_ptr`, but significant amounts of 
 Passing a C++ `unique_ptr` to Rust, or obtaining one from an owned Rust value, needs to handle the semantic and API differences between the languages.
 For example, Zngur does this using `Ref` and `RefMut` types.
 
-Some (all?) FFI tools limit C++ types on the Rust stack, due to destructive moves. Fixing this might require language changes.
+Many C++ types can't be put on the Rust stack, because C++ doesn't support trivial relocatability, but Rust assumes all types are trivially relocatable.
+Fixing this might require C++ language changes, because using non-relocatable wrapper types in Rust significantly impacts ergonomics.
+
 Some users might benefit from custom move operation support in Rust.
 
 ### Example Code
@@ -66,7 +68,9 @@ TODO
 ## Experts & Champions
 [experts--champions]: #experts--champions
 
-TODO
+David Sankel: Putting C++ types on the Rust stack is very important.
+
+TODO: fill in the remainder of this section
 
 ## Unresolved questions
 [unresolved-questions]: #unresolved-questions

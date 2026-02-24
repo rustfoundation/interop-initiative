@@ -79,7 +79,10 @@ TODO: fill in the remainder of this section
 ## Impact
 [impact]: #impact
 
-TODO
+Taking the data/allocation from a Rust `Vec`, and putting it in a C++ `std::vector` would be useful, and might be implementable using polymorphic C++ allocators.
+The other way around is trickier.
+
+TODO: fill in the remainder of this section
 
 ## Guide-level explanation
 [guide-level-explanation]: #guide-level-explanation
@@ -122,7 +125,9 @@ TODO
 ## Experts & Champions
 [experts--champions]: #experts--champions
 
-TODO
+David Sankel: This is a nice-to-have, particularly the `Vec`/`std::vector` case.
+
+TODO: fill in the remainder of this section
 
 ## Unresolved questions
 [unresolved-questions]: #unresolved-questions

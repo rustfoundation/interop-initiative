@@ -118,7 +118,9 @@ TODO
 ## Experts & Champions
 [experts--champions]: #experts--champions
 
-TODO
+David Sankel: A canonical set of C++ representations of Rust types would be useful.
+
+TODO: fill in the remainder of this section
 
 ## Unresolved questions
 [unresolved-questions]: #unresolved-questions
