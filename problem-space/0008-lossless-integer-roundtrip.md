@@ -11,12 +11,56 @@ Rust and C++ have different integer types. Some of these integer types have equi
 
 Many interop users would benefit from lossless roundtrips between Rust and C++. This might also improve performance in hot, integer-heavy code.
 
-In Rust, the set of conversions available with `Into` is a subset(?) of lossless(?) `as` casts.
+Rust's FFI integer types are based on the most popular C compiler (and compiler settings) on each architecture, which causes challenges for less popular compilers and non-standard settings.
+
+In Rust, the set of conversions available with `Into` is a subset of lossless `as` casts.
+The `as` operator can also silently perform lossy casts in Rust, but there are `clippy` lints that:
+
+- [convert lossless `as` casts to `Into`](https://rust-lang.github.io/rust-clippy/stable/index.html#cast_lossless)
+- detect and prevent [truncating](https://rust-lang.github.io/rust-clippy/stable/index.html#cast_possible_truncation), [wrapping](https://rust-lang.github.io/rust-clippy/stable/index.html#cast_possible_wrap), and [sign loss](https://rust-lang.github.io/rust-clippy/stable/index.html#cast_sign_loss) `as` casts
+- [avoid redundant casts](https://rust-lang.github.io/rust-clippy/stable/index.html#unnecessary_cast)
 
 ### Example Code
 [example-code]: #example-code
 
-TODO
+The following Rust integer and floating point types are guaranteed to match the corresponding C type, for the most popular compiler on each platform (as defined by Rust when that target was added). These C types can also be used in C++.
+
+| Rust          | C                 | Notes                                         |
+| ------------- | ----------------- | --------------------------------------------- |
+| u{N}          | uint{N}_t         | N = 8, 16, 32, 64                             |
+| i{N}          | int{N}_t          | N = 8, 16, 32, 64                             |
+| u128          | __uint128_t       | [1] [2]                                       |
+| i128          | __int128_t        | [1] [2]                                       |
+| f{N}          | boost::float{N}_t | [1], [3], N = 16, 32, 64, 128                 |
+
+[1]: C availability is platform dependent
+[2]: C name is platform dependent
+[3]: Not available in C or C++ standard libraries
+
+The following Rust FFI types are guaranteed to match the corresponding C type, for the most popular compiler on each platform (as defined by Rust when that target was added).
+These C types can also be used in C++.
+
+| Rust core::ffi:: | C             | Notes                                                       |
+| ---------------- | ------------- | ----------------------------------------------------------- |
+| c_{type}         | {type}        | {type} names are in the [Rust core library docs][ffi-types] |
+| *mut c_void      | void *        | Only equivalent when used as a pointer                      |
+| *const c_void    | const void *  | Only equivalent when used as a pointer                      |
+
+[ffi-types]: https://doc.rust-lang.org/core/ffi/index.html#types
+
+The following Rust "integer" types have no corresponding C or C++ types:
+
+| Rust | Notes                                                 |
+| ---- | ----------------------------------------------------- |
+| bool | 8 bits, but the only valid values are 0 and 1         |
+| char | A Unicode scalar value, surrogates are invalid values |
+
+The following C/C++ integer types have no corresponding Rust type:
+
+| C/C++              | Notes                                                |
+| ------------------ | ---------------------------------------------------- |
+| bool               | size is implementation-defined                       |
+| unsigned field:{N} | Only compatible with u{N} for N = 8, 16, 32, 64, 128 |
 
 ## Related Problems
 [related-problems]: #related-problems
