@@ -21,7 +21,33 @@ Making Rust panics into C++ exceptions generates too much complexity, even thoug
 ### Example Code
 [example-code]: #example-code
 
-TODO
+C++ exceptions can be converted to Rust `Result`s using C++ code like:
+
+```c++
+// Generated C++ header compatible with Rust types
+#include <rust/std/result_i32_io_error.hpp>
+
+rust::std::Result<i32, rust::io::Error> do_the_thing() {
+    try {
+        return rust::std::Result<i32, rust::io::Error>::Ok(cplusplus::do_the_thing());
+    } catch(...) {
+      return rust::std::Result<i32, rust::io::Error>::Err(rust::io::Error::Other);
+    }
+}
+```
+
+Which can be called from Rust as:
+
+```rust
+fn do_the_thing() -> Result<i32, io::Error>;
+
+fn caller() -> Result<(), io::Error> {
+    let outcome = do_the_thing()?;
+    ...
+}
+```
+
+Credit to David Sankel / Zngur [for this example code](https://gist.github.com/camio/2f046c17bdb9f6f01120678cf522847c#file-example-cpp-L49).
 
 ## Related Problems
 [related-problems]: #related-problems

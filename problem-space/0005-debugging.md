@@ -23,6 +23,9 @@ TODO
 Debugging requires:
 
 - [accurate information about type layouts](0003-type-layout.md)
+
+And is related to:
+
 - compliance tooling support for mixed binaries
 - code patching for mixed binaries
 - compatibility with existing logging solutions

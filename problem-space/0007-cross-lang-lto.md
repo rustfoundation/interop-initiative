@@ -27,7 +27,56 @@ This is technically a bug in the code with undefined behaviour, rather than the 
 ### Example Code
 [example-code]: #example-code
 
-TODO
+This unsafe Rust code is well-defined, and prints `1, 0, 0, 0`:
+
+```rust
+use std::ptr::addr_of_mut;
+
+#[repr(C)]
+struct S(u8, u16);
+
+fn main() {
+    let mut mem: [u8; 4] = [0; 4];
+    let p = addr_of_mut!(mem);
+    let q: *mut S = p.cast();
+    unsafe {
+        (*q).0 = 1;
+    }
+    dbg!(mem);
+}
+```
+
+The equivalent C++ code is not well-defined, because `q->byte = 1` can overwrite padding bytes.
+It might print `1, 0, 0, 0,` on some compilers, but this is not guaranteed.
+
+```c++
+#include <cstdint>
+#include <iostream>
+
+typedef struct {
+    uint8_t byte;
+    uint16_t twobyte;
+} s_t;
+
+int main(void) {
+    uint8_t mem[4] = { 0, 0, 0, 0 };
+    uint8_t *p = mem;
+    s_t *q = (s_t *)p;
+    q->byte = 1;
+    for (int i = 0; i < 4; i++) {
+        std::cout << int(mem[i]) << ", ";
+    }
+}
+```
+
+For example, the following compilers produce different output:
+
+- `0, 0, 0, 0,`: [x86-64 icx 2025.3.1, but only with `-O{,2,3,s,z}`](https://godbolt.org/z/4sa9Wrsz3)
+
+This ill-defined C++ code can cause issues if the struct definitions, reads, or writes are in different languages, then linked using cross-language LTO.
+Which language's semantics are followed?
+
+Credit to [Jake Degen for these code examples](https://rust-lang.zulipchat.com/#narrow/channel/136281-t-opsem/topic/How.20does.20the.20GCC.20backend.20handle.20code.20C.20would.20disallow.3F/near/394120185).
 
 ## Related Problems
 [related-problems]: #related-problems
