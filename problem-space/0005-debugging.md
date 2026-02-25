@@ -76,7 +76,9 @@ TODO
 ## Experts & Champions
 [experts--champions]: #experts--champions
 
-TODO
+- [Pete LeVasseur](https://hackmd.io/uZ8hHkYXQQCLtwuS7xP6JQ?view#C-ltgt-Rust-Debugging-Story)
+
+TODO: fill in the remainder of this section
 
 ## Unresolved questions
 [unresolved-questions]: #unresolved-questions
