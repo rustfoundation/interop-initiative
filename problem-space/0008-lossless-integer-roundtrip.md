@@ -11,6 +11,8 @@ Rust and C++ have different integer types. Some of these integer types have equi
 
 Many interop users would benefit from lossless roundtrips between Rust and C++. This might also improve performance in hot, integer-heavy code.
 
+Other interop users would benefit from [a 1:1 mapping](https://github.com/google/crubit/blob/main/support/ffi_11/src/lib.rs) between Rust and C++ integer types, [to support C++ templates and overloads](https://hackmd.io/uZ8hHkYXQQCLtwuS7xP6JQ?view#Integer-Types).
+
 Rust's FFI integer types are based on the most popular C compiler (and compiler settings) on each architecture, which causes challenges for less popular compilers and non-standard settings.
 
 In Rust, the set of conversions available with `Into` is a subset of lossless `as` casts.
