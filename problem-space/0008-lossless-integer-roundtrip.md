@@ -134,7 +134,11 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
-TODO
+Rust Language/Library features:
+
+- [c_size_t](https://github.com/rust-lang/rust/issues/88345)
+
+TODO: fill in the remainder of this section
 
 ## Further Background
 [further-background]: #further-background

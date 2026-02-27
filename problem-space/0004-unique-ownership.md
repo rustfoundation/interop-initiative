@@ -96,7 +96,31 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
-TODO
+Rust Language/Library features:
+
+Reference Ergonomics:
+
+- [arbitrary_self_types](https://doc.rust-lang.org/nightly/unstable-book/language-features/arbitrary-self-types.html)
+- [arbitrary_self_types_pointers](https://doc.rust-lang.org/nightly/unstable-book/language-features/arbitrary-self-types-pointers.html)
+- [deref_patterns](https://github.com/rust-lang/rust/issues/87121)
+- [pin_ergonomics](https://doc.rust-lang.org/nightly/unstable-book/language-features/pin-ergonomics.html)
+- [reborrow](https://github.com/rust-lang/rust/issues/145612)
+
+Constructor / Call Ergonomics:
+
+- [super_let](https://doc.rust-lang.org/nightly/unstable-book/language-features/super-let.html)
+- [fn_traits](https://doc.rust-lang.org/nightly/unstable-book/library-features/fn-traits.html), to do fixups before calling with a foreign type
+  - [unboxed_closures](https://doc.rust-lang.org/nightly/unstable-book/language-features/unboxed-closures.html)
+
+Safety:
+
+- [unsafe_pinned](https://github.com/rust-lang/rust/issues/125735)
+
+Performance:
+
+- [specialization](https://github.com/rust-lang/rust/issues/31844)
+
+TODO: fill in the remainder of this section
 
 ## Further Background
 [further-background]: #further-background

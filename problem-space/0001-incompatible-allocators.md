@@ -115,7 +115,11 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
-TODO
+Rust Language/Library features:
+
+- [allocator_api](https://doc.rust-lang.org/nightly/unstable-book/library-features/allocator-api.html)
+
+TODO: fill in the remainder of this section
 
 ## Further Background
 [further-background]: #further-background

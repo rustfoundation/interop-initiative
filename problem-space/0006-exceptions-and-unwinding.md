@@ -81,7 +81,11 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
-TODO
+Rust Language/Library features:
+
+- [panic_runtime](https://github.com/rust-lang/rust/issues/32837)
+
+TODO: fill in the remainder of this section
 
 ## Further Background
 [further-background]: #further-background

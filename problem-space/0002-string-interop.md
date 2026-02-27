@@ -108,7 +108,16 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
-TODO
+Rust Language/Library features:
+
+- [str_from_raw_parts](https://github.com/rust-lang/rust/issues/119206)
+- [cstr_bytes](https://github.com/rust-lang/rust/issues/112115) iterator
+- [bstr](https://github.com/rust-lang/rust/issues/134915), strings that aren't always UTF-8
+
+Windows-Only:
+
+- [str_from_utf16_endian](https://github.com/rust-lang/rust/issues/116258)
+- [utf16_extra](https://github.com/rust-lang/rust/issues/94919) (surrogate detection)
 
 ## Further Background
 [further-background]: #further-background
