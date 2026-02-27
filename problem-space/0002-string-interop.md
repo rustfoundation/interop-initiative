@@ -70,6 +70,10 @@ Creating and modifying strings at runtime depends on:
 
 String APIs use vectors and iterators, so they inherit most vector and iterator interoperability problems.
 
+This problem will also benefit from:
+
+- [Function overloading in FFI bindings project goal](https://rust-lang.github.io/rust-project-goals/2026/overloading-for-ffi.html)
+
 TODO: fill in the remainder of this section
 
 ## Acceptance Criteria
