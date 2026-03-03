@@ -65,11 +65,24 @@ unsafe fn use_string_in_rust(cppstr: CppString) {
 ## Related Problems
 [related-problems]: #related-problems
 
-Ownership is related to:
+Unique ownership is related to:
 
 - shared and exclusive references
 - [correct memory allocation and deallocation](0001-incompatible-allocators.md)
 - [compatible type layouts](0003-type-layout.md), or marshalling data using FFI glue
+
+This problem also depends on:
+
+- [Beyond the `&` project goal](https://rust-lang.github.io/rust-project-goals/2026/roadmap-beyond-the-ampersand.html)
+  - [Reborrow traits](https://rust-lang.github.io/rust-project-goals/2026/reborrow-traits.html)
+  - [Field projections](https://rust-lang.github.io/rust-project-goals/2026/field-projections.html)
+  - [In-place initialization](https://rust-lang.github.io/rust-project-goals/2026/in-place-init.html)
+- [Immovable types & guaranteed destructors project goal](https://rust-lang.github.io/rust-project-goals/2026/move-trait.html)
+
+And some use cases could benefit from:
+
+- [Ergonomic ref-counting project goal](https://rust-lang.github.io/rust-project-goals/2026/ergonomic-rc.html)
+- [specialization project goal](https://rust-lang.github.io/rust-project-goals/2026/specialization.html)
 
 TODO: fill in the remainder of this section
 
@@ -96,7 +109,31 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
-TODO
+Rust Language/Library features:
+
+Reference Ergonomics:
+
+- [arbitrary_self_types](https://doc.rust-lang.org/nightly/unstable-book/language-features/arbitrary-self-types.html)
+- [arbitrary_self_types_pointers](https://doc.rust-lang.org/nightly/unstable-book/language-features/arbitrary-self-types-pointers.html)
+- [deref_patterns](https://github.com/rust-lang/rust/issues/87121)
+- [pin_ergonomics](https://doc.rust-lang.org/nightly/unstable-book/language-features/pin-ergonomics.html)
+- [reborrow](https://github.com/rust-lang/rust/issues/145612)
+
+Constructor / Call Ergonomics:
+
+- [super_let](https://doc.rust-lang.org/nightly/unstable-book/language-features/super-let.html)
+- [fn_traits](https://doc.rust-lang.org/nightly/unstable-book/library-features/fn-traits.html), to do fixups before calling with a foreign type
+  - [unboxed_closures](https://doc.rust-lang.org/nightly/unstable-book/language-features/unboxed-closures.html)
+
+Safety:
+
+- [unsafe_pinned](https://github.com/rust-lang/rust/issues/125735)
+
+Performance:
+
+- [specialization](https://github.com/rust-lang/rust/issues/31844)
+
+TODO: fill in the remainder of this section
 
 ## Further Background
 [further-background]: #further-background

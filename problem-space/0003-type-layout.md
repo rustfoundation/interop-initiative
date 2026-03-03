@@ -70,6 +70,10 @@ This problem is related to:
 Solving this problem on the Rust side depends on parts of:
 
 - [repr(C) and ordered fields confusion](https://github.com/rust-lang/rfcs/pull/3845)
+- [Unblocking dormant traits (extern types) project goal](https://rust-lang.github.io/rust-project-goals/2026/roadmap-unblocking-dormant-traits.html)
+- [Expansion-time evaluation (compiler interop) project goal](https://rust-lang.github.io/rust-project-goals/2026/expansion-time-evaluation.html)
+  - [Reflection and comptime](https://rust-lang.github.io/rust-project-goals/2026/reflection-and-comptime.html)
+- [Open enums project goal](https://rust-lang.github.io/rust-project-goals/2026/open-enums.html)
 
 TODO: fill in the remainder of this section
 
@@ -96,7 +100,32 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
-TODO
+Compiler arguments:
+
+- The [-Zrandomize-layout](https://doc.rust-lang.org/nightly/unstable-book/compiler-flags/randomize-layout.html)
+compiler flag randomizes the layout of `repr(Rust)` types, but it does not cover all possible layout permutations.
+
+Rust Language/Library features:
+
+Layout & alignment:
+
+- [layout_for_ptr](https://github.com/rust-lang/rust/issues/69835)
+- [pointer_is_aligned_to](https://github.com/rust-lang/rust/issues/96284)
+- [fn_align](https://github.com/rust-lang/rust/issues/82232)
+- [static_align](https://github.com/rust-lang/rust/issues/146177)
+- [sized_hierarchy](https://doc.rust-lang.org/nightly/unstable-book/language-features/sized-hierarchy.html)
+
+Offsets:
+
+- [offset_of_enum](https://doc.rust-lang.org/nightly/unstable-book/language-features/offset-of-enum.html)
+- [offset_of_slice](https://doc.rust-lang.org/nightly/unstable-book/language-features/offset-of-slice.html)
+
+Type compatibility:
+
+- [c_size_t](https://github.com/rust-lang/rust/issues/88345)
+- [thin_box](https://github.com/rust-lang/rust/issues/92791)
+
+TODO: fill in the remainder of this section
 
 ## Further Background
 [further-background]: #further-background

@@ -114,7 +114,17 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
-TODO
+Compiler arguments:
+
+- The [-Zvirtual-function-elimination -Clto](https://doc.rust-lang.org/nightly/unstable-book/compiler-flags/virtual-function-elimination.html)
+options run unused Rust virtual function elimination passes during LTO. But this analysis has known miscompilations.
+
+Rust Language/Library features:
+
+- [link_arg_attribute](https://doc.rust-lang.org/nightly/unstable-book/language-features/link-arg-attribute.html)
+- [used_with_arg](https://github.com/rust-lang/rust/issues/93798)
+
+TODO: fill in the remainder of this section
 
 ## Further Background
 [further-background]: #further-background

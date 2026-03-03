@@ -70,6 +70,10 @@ Creating and modifying strings at runtime depends on:
 
 String APIs use vectors and iterators, so they inherit most vector and iterator interoperability problems.
 
+This problem will also benefit from:
+
+- [Function overloading in FFI bindings project goal](https://rust-lang.github.io/rust-project-goals/2026/overloading-for-ffi.html)
+
 TODO: fill in the remainder of this section
 
 ## Acceptance Criteria
@@ -108,7 +112,16 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
-TODO
+Rust Language/Library features:
+
+- [str_from_raw_parts](https://github.com/rust-lang/rust/issues/119206)
+- [cstr_bytes](https://github.com/rust-lang/rust/issues/112115) iterator
+- [bstr](https://github.com/rust-lang/rust/issues/134915), strings that aren't always UTF-8
+
+Windows-Only:
+
+- [str_from_utf16_endian](https://github.com/rust-lang/rust/issues/116258)
+- [utf16_extra](https://github.com/rust-lang/rust/issues/94919) (surrogate detection)
 
 ## Further Background
 [further-background]: #further-background
