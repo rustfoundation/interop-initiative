@@ -64,6 +64,52 @@ The following C/C++ integer types have no corresponding Rust type:
 | bool               | size is implementation-defined                       |
 | unsigned field:{N} | Only compatible with u{N} for N = 8, 16, 32, 64, 128 |
 
+#### Interop Platform Differences
+[interop-platform-differences]: #interop-platform-differences
+
+This self-contained runnable example demonstrates how [C integer platform differences](https://stackoverflow.com/questions/384502/what-is-the-bit-size-of-long-on-64-bit-windows) can cause Rust compilation failures:
+
+```rust
+use std::ffi::{c_long, c_uint};
+use cpp::cpp;
+
+fn main() {
+    let count: u32 = u32::MAX;
+    println!("{count}: Hello, Rust u32!");
+    #[allow(clippy::useless_conversion, reason = "only needed on Windows 64-bit")]
+    let count: i64 = unsafe { native_cplusplus_integers(count) }.into();
+    println!("{count}: Hello, Interop platform differences!");
+}
+
+unsafe extern "C" {
+    fn native_cplusplus_integers(count: c_uint) -> c_long;
+}
+
+cpp! {{
+    #include <iostream>
+
+    extern "C" long send_rust_foreign_types(unsigned int count);
+
+    extern "C" long native_cplusplus_integers(unsigned int count) {
+        count--;
+        std::cout << count << ": Hello C++ silent integer conversion!" << std::endl;
+        send_rust_foreign_types(count);
+        // Silently truncates on Windows
+        return count;
+    }
+}}
+
+#[unsafe(no_mangle)]
+extern "C" fn send_rust_foreign_types(mut count: c_uint) -> c_long {
+    count -= 1;
+    println!("{count}: Hello, Rust inner c_uint!");
+    // Compilation fails on Windows 64-bit: u64 to i64
+    count.into()
+}
+```
+
+This code can be run using the [`cpp` crate](https://docs.rs/cpp/latest/cpp/macro.cpp.html), like the [Build and Run code example](https://github.com/rustfoundation/interop-initiative/issues/5).
+
 ## Related Problems
 [related-problems]: #related-problems
 
