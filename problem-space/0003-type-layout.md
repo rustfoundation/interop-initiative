@@ -16,46 +16,69 @@ Mismatching layouts can lead to unsoundness, if data is not marshalled using the
 ### Example Code
 [example-code]: #example-code
 
-This Rust code passes a read-only Rust struct to C++:
+This Rust code passes a read-only Rust struct to C++.
+
+The C++ code has its own definition of the struct, which must be kept ABI-compatible with the Rust struct `Example`.
+This is particularly tricky in the presence of non-standard types, such as floating point and 128-bit integers.
 
 ```rust
+use cpp::cpp;
+
 #[repr(C)]
+#[derive(Debug)]
 struct Example {
     byte: u8,
     fractional: f32,
     integer: u128,
 }
 
-unsafe extern "C" {
-    fn use_struct_in_cplusplus(pointer: *const Example);
+fn main() {
+    let ex = Example {
+        byte: 42,
+        fractional: 3.5,
+        integer: 9000,
+    };
+    println!("{ex:?}");
+    unsafe {
+        pass_struct_to_cplusplus(&ex);
+    }
 }
 
-unsafe fn pass_struct_to_cplusplus(example: &'static Example) {
-    let pointer =std::ptr::from_ref(example);
+unsafe fn pass_struct_to_cplusplus(ex: &Example) {
+    let ex_ptr = std::ptr::from_ref(ex);
     // SAFETY:
     // - The pointer must not be read after Rust has deallocated or moved the struct, or beyond the size of the struct.
     // - The pointer must never be written to.
-    unsafe { use_struct_in_cplusplus(pointer); };
+    unsafe {
+        use_struct_in_cplusplus(ex_ptr);
+    };
 }
+
+unsafe extern "C" {
+    fn use_struct_in_cplusplus(ex_ptr: *const Example);
+}
+
+cpp! {{
+    #include <iostream>
+    #include <cstdint>
+    //#include <boost/cstdfloat.hpp>
+    namespace boost {
+        typedef float float32_t;
+    }
+
+    typedef struct {
+        uint8_t byte;
+        boost::float32_t fractional;
+        __uint128_t integer;
+    } example_t;
+
+    extern "C" void use_struct_in_cplusplus(const example_t* ex_ptr) {
+        std::cout << "Example: " << ex_ptr->byte << ", " << ex_ptr->fractional << ", " << (unsigned long long)ex_ptr->integer << std::endl;
+    }
+}}
 ```
 
-The C++ code has its own definition of the struct, which must be kept ABI-compatible with the Rust struct `Example`.
-This is particularly tricky in the presence of non-standard types, such as floating point and 128-bit integers.
-
-```c++
-#include <cstdint>
-#include <boost/cstdfloat.hpp>
-
-typedef struct {
-    uint8_t byte;
-    boost::float32_t fractional,
-    __uint128_t integer;
-} example_t;
-
-void use_struct_in_cplusplus(const example_t* pointer) {
-    // do_something_with(pointer);
-}
-```
+This code can be run using the [`cpp` crate](https://docs.rs/cpp/latest/cpp/macro.cpp.html), like the [Build and Run code example](https://github.com/rustfoundation/interop-initiative/issues/5).
 
 See also the "Layout issues" section of [RFC 3845](https://github.com/rust-lang/rfcs/pull/3845/changes), which has multiple platform-specific Rust/C layout compatibility code examples.
 

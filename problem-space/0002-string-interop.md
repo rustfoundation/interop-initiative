@@ -27,37 +27,65 @@ However, maintaining consistent semantics across all string operations is challe
 ### Example Code
 [example-code]: #example-code
 
-This Rust code passes a read-only Rust string pointer to C++:
+This example is similar to the one in [the unique ownership problem statement](0004-unique-ownership.md), but it uses pointers to avoid undefined behaviour.
+
+The Rust code passes some Rust `CStr` pointers to C++.
+The C++ code constructs larger `std::string`s by copying their data bytes from the Rust pointer into a new allocation, which is an unacceptable performance trade-off for some use cases.
 
 ```rust
-use std::ffi::CStr;
+#![recursion_limit = "256"]
+
+use cpp::cpp;
+use std::ffi::c_char;
+
+fn main() {
+    unsafe {
+        pass_strings_to_cplusplus(c"a".as_ptr(), c"not small string optimized".as_ptr());
+    }
+}
 
 unsafe extern "C" {
-    fn use_string_in_cplusplus(pointer: *const u8, length: usize);
+    fn pass_strings_to_cplusplus(cstr: *const c_char, cother: *const c_char);
 }
 
-unsafe fn pass_string_to_cplusplus(cstr: &'static CStr) {
-    let length = cstr.count_bytes();
-    let pointer = cstr.as_ptr();
-    // SAFETY:
-    // - The pointer must not be read after Rust has deallocated or moved the string, or beyond `length + 1` (the `nul` byte).
-    // - The pointer must never be written to.
-    unsafe { use_string_in_cplusplus(pointer, length); };
+cpp! {{
+    #include <string>
+    #include <cstring>
+    #include <iostream>
+
+    extern "C" {
+        extern const size_t SIZE_OF_CPP_STRING;
+
+        void use_strings_in_rust(const std::basic_string<char> *cppstr, const std::basic_string<char> *other);
+    }
+
+    extern "C" void pass_strings_to_cplusplus(const char *cstr, const char *cother) {
+        auto cppstr = std::string(cstr, strlen(cstr));
+        auto other = std::string(cother, strlen(cother));
+
+        // Required for FFI safety by Rust (fails at compile time)
+        //static_assert(std::is_trivially_move_constructible_v<typeof(cppstr)>);
+        if (SIZE_OF_CPP_STRING != sizeof(cppstr)) { std::cout << "Size is " << SIZE_OF_CPP_STRING << " in Rust but " << sizeof(cppstr) << " in C++" << std::endl; abort(); }
+
+        use_strings_in_rust(&cppstr, &other);
+    }
+}}
+
+#[unsafe(no_mangle)]
+static SIZE_OF_CPP_STRING: usize = 24;
+
+#[repr(C)]
+struct CppString {
+    data: [u8; SIZE_OF_CPP_STRING],
+}
+
+#[unsafe(no_mangle)]
+unsafe fn use_strings_in_rust(cppstr: *const CppString, other: *const CppString) {
+    println!("{cppstr:?}, {other:?}")
 }
 ```
 
-The C++ code constructs a `std::string` by copying `length` bytes from the Rust pointer into a new allocation, which is an unacceptable performance trade-off for some use cases:
-
-```c++
-#include <cstdint>
-#include <string>
-
-void use_string_in_cplusplus(const uint8_t* pointer, size_t length) {
-    auto cppstr = std::string((const char *)pointer, length);
-
-    // do_something_with(cppstr);
-}
-```
+This code can be run using the [`cpp` crate](https://docs.rs/cpp/latest/cpp/macro.cpp.html), like the [Build and Run code example](https://github.com/rustfoundation/interop-initiative/issues/5).
 
 ## Related Problems
 [related-problems]: #related-problems

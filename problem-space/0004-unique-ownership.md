@@ -22,43 +22,62 @@ Some users might benefit from custom move operation support in Rust.
 ### Example Code
 [example-code]: #example-code
 
-This C++ code passes a read-write C++ string object to Rust:
-
-```c++
-#include <string>
-#include <cstring>
-#include <cassert>
-
-extern "C" {
-    extern const size_t SIZE_OF_CPP_STRING;
-
-    void use_string_in_rust(std::basic_string<char> cppstr);
-}
-
-void pass_string_to_rust(const char *cstr) {
-    auto cppstr = std::string(cstr, strlen(cstr));
-
-    // Required for FFI safety by Rust, but fails at compile time
-    //static_assert(std::is_trivially_move_constructible_v<typeof(cppstr)>);
-    assert(sizeof(cppstr) == SIZE_OF_CPP_STRING);
-
-    use_string_in_rust(cppstr);
-}
-```
-
-But as soon as Rust moves the C++ string, it is undefined behaviour:
+This C++ code passes some read-write C++ string objects to Rust.
+But as soon as Rust moves the C++ strings, it is undefined behaviour, because `string` is not trivially relocatable.
 
 ```rust
-static SIZE_OF_CPP_STRING: usize = 32;
+#![recursion_limit = "256"]
+
+use cpp::cpp;
+use std::ffi::c_char;
+
+fn main() {
+    unsafe {
+        pass_strings_to_cplusplus(c"a".as_ptr(), c"not small string optimized".as_ptr());
+    }
+}
+
+unsafe extern "C" {
+    fn pass_strings_to_cplusplus(cstr: *const c_char, cother: *const c_char);
+}
+
+cpp! {{
+    #include <string>
+    #include <cstring>
+    #include <iostream>
+
+    extern "C" {
+        extern const size_t SIZE_OF_CPP_STRING;
+
+        void swap_strings_in_rust(std::basic_string<char> *cppstr, std::basic_string<char> *other);
+    }
+
+    extern "C" void pass_strings_to_cplusplus(const char *cstr, const char *cother) {
+        auto cppstr = std::string(cstr, strlen(cstr));
+        auto other = std::string(cother, strlen(cother));
+
+        // Required for FFI safety by Rust (fails at compile time)
+        //static_assert(std::is_trivially_move_constructible_v<typeof(cppstr)>);
+        if (SIZE_OF_CPP_STRING != sizeof(cppstr)) { std::cout << "Size is " << SIZE_OF_CPP_STRING << " in Rust but " << sizeof(cppstr) << " in C++" << std::endl; abort(); }
+
+        std::cout << cppstr << " | " << &cppstr << " | " << (void *)cppstr.c_str() << ", " << other << " | " << &other << " | " << (void *)other.c_str() << " before" << std::endl;
+        swap_strings_in_rust(&cppstr, &other);
+        std::cout << cppstr << " | " << &cppstr << " | " << (void *)cppstr.c_str() << ", " << other << " | " << &other << " | " << (void *)other.c_str() << " after" << std::endl;
+    }
+}}
+
+#[unsafe(no_mangle)]
+static SIZE_OF_CPP_STRING: usize = 24;
 
 #[repr(C)]
 struct CppString {
     data: [u8; SIZE_OF_CPP_STRING],
 }
 
-unsafe fn use_string_in_rust(cppstr: CppString) {
+#[unsafe(no_mangle)]
+unsafe fn swap_strings_in_rust(cppstr: &mut CppString, other: &mut CppString) {
     // Undefined behaviour: `string` is not trivially move constructible in C++
-    let moved_cppstr = cppstr;
+    std::mem::swap(cppstr, other);
 }
 ```
 
