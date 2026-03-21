@@ -166,4 +166,7 @@ TODO: fill in the remainder of this section
 ## Unresolved questions
 [unresolved-questions]: #unresolved-questions
 
-TODO
+- Should every C++ to Rust string conversion  validate UTF-8, even at a performance cost?
+- Is zero-copy string sharing between Rust and C++ ever possible without unsafe code?
+
+TODO: fill in the remainder of this section
