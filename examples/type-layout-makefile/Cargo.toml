@@ -1,0 +1,9 @@
+[package]
+name = "type-layout-example"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "type_layout_example"
+crate-type = ["staticlib"]
+path = "src/lib.rs"
