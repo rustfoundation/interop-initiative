@@ -1,0 +1,42 @@
+# String Interop — Makefile Example
+
+This example shows how to pass strings between C and Rust across the FFI
+boundary using a plain `Makefile`.
+
+It relates to the [string interop problem statement](../../problem-space/0002-string-interop.md)
+and also touches on the [incompatible allocators problem](../../problem-space/0001-incompatible-allocators.md):
+a string allocated by Rust **must** be freed by Rust, not by C's `free()`.
+
+## What it demonstrates
+
+- Passing a C string (`const char*`) into Rust using `CStr`
+- Returning a Rust-allocated string to C using `CString::into_raw`
+- Freeing a Rust-allocated string correctly using a dedicated `free_string` function
+- Why you must **never** call C's `free()` on a pointer returned by Rust
+
+## Requirements
+
+- Rust (stable) and `cargo`
+- `gcc`
+- `make`
+
+## Build and run
+```bash
+make
+```
+
+Expected output:
+```
+[C] sending: "Hello from C!"
+[Rust] received: "Hello from C!"
+[C] received: "Hello from Rust! You sent: Hello from C!"
+[C] string freed successfully
+```
+
+## Key safety rule
+
+The C code calls `free_string(response)` instead of `free(response)`.
+This is essential: `process_string` returns a pointer created by
+`CString::into_raw`, which uses Rust's allocator. Freeing it with C's
+`free()` would be undefined behaviour, as described in
+[0001-incompatible-allocators.md](../../problem-space/0001-incompatible-allocators.md).
