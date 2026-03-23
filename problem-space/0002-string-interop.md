@@ -127,10 +127,10 @@ TODO: fill in the remainder of this section
 
 The lack of seamless string interop has real consequences:
 
-- <b>Performance overhead</b> - Every C++ to Rust string conversion requires a copy and potentially a UTF-8 validation pass, which is unacceptable in hot code paths
-- <b>Safety risks</b> - Manual FFI string handling is error-prone, leading to use-after-free, buffer overflows, and undefined behaviour
-- <b>Adoption barrier</b> - Many C++ projects that want to incrementally adopt Rust are blocked or slowed down by string interop complexity
-- <b>API surface reduction</b> — Developers are forced to use CString or OsString which dramatically limits compatible API surface
+- *Performance overhead* - Every C++ to Rust string conversion requires a copy and potentially a UTF-8 validation pass, which is unacceptable in hot code paths
+- *Safety risks* - Manual FFI string handling is error-prone, leading to use-after-free, buffer overflows, and undefined behaviour
+- *Adoption barrier* - Many C++ projects that want to incrementally adopt Rust are blocked or slowed down by string interop complexity
+- *API surface reduction* — Developers are forced to use CString or OsString which dramatically limits compatible API surface
 
 TODO: fill in the remainder of this section
 
