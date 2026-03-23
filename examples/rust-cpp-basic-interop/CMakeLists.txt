@@ -4,12 +4,14 @@ project(RustInterop)
 add_executable(main main.cpp)
 
 add_custom_command(
-    OUTPUT librust_interop.a
+    OUTPUT ${CMAKE_SOURCE_DIR}/target/release/librust_interop.a
     COMMAND cargo build --release
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
-add_custom_target(rustlib ALL DEPENDS librust_interop.a)
+add_custom_target(rustlib ALL
+    DEPENDS ${CMAKE_SOURCE_DIR}/target/release/librust_interop.a
+)
 
 add_dependencies(main rustlib)
 
