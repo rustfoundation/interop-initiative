@@ -18,7 +18,7 @@ otherwise field reads will be incorrect or undefined behaviour will occur.
 ## Requirements
 
 - Rust (stable) and `cargo`
-- `gcc`
+- `gcc` or `clang` (any C compiler — override with `make CC=clang`)
 - `make`
 
 ## Build and run
@@ -44,3 +44,8 @@ steps needed to add a Rust component to such a project:
 
 The key constraint is that the Rust struct must use `#[repr(C)]` — without it,
 Rust is free to reorder or pad fields differently from C, causing silent data corruption.
+
+## Related
+
+- [Type layout problem statement](../../problem-space/0003-type-layout.md)
+- [Rust in C/C++ build system use case (#13)](https://github.com/rustfoundation/interop-initiative/issues/13)
