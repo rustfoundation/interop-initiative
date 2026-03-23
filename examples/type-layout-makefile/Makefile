@@ -6,6 +6,7 @@
 # Usage:
 #   make        - build and run the example
 #   make clean  - remove all build artifacts
+CC ?= gcc 
 
 RUST_DIR   := .
 C_SRC      := main.c
@@ -28,7 +29,7 @@ $(LIB_DIR)/$(LIB_NAME):
 
 # Step 2: compile main.c and link against the Rust static library
 $(TARGET): $(C_SRC) $(LIB_DIR)/$(LIB_NAME)
-	gcc $(C_SRC) \
+	$(CC) $(C_SRC) \
 		-L$(LIB_DIR) \
 		-ltype_layout_example \
 		$(RUST_LIBS) \
