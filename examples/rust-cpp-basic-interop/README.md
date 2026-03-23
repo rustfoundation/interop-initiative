@@ -26,7 +26,7 @@ use std::os::raw::c_char; // same matching C-style 'char'
 #[unsafe(no_mangle)] // this line used keep the function name of the of both C and rust same . This is essential for FFI 
 pub extern "C" fn log_message(msg: *const c_char) { 
 /*pub: its for making function public so both can access the function
-extern: This keyword tells the Cargo that the function using different calling convention other than its  ABI
+extern: This keyword tells the 'rustc' that the function using different calling convention other than its  ABI
 C: its telling to use ABI of the C-programming */
     print_log("[INFO]", msg);
 }
