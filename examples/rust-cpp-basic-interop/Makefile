@@ -1,6 +1,8 @@
+CC ?= clang++
+
 all:
 	cargo build --release
-	clang++ main.cpp target/release/librust_interop.a -o main
+	$(CC) main.cpp target/release/librust_interop.a -o main
 
 run:
 	./main
