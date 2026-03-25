@@ -17,5 +17,3 @@ pub fn call_overload_f64(value: c_double) -> c_double {
     // as explained in call_overload_i32
     unsafe { double_value_f64(value) }
 }
-
-
