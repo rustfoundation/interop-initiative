@@ -2,7 +2,7 @@
 // Since Rust doesn't support overloading, we use extern "C"
 // wrapper functions with unique names as a workaround.
 
-use std::ffi::{c_int, c_double};
+use std::ffi::{c_double, c_int};
 
 // Declare the C++ wrapper functions so Rust knows they exist.
 // These must match the extern "C" functions in add.cpp exactly.
