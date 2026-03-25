@@ -1,0 +1,152 @@
+# This workflow checks each interop example builds and runs, and for lints.
+name: Check
+
+# Runs this workflow
+on:
+  # On all pull requests, regardless of target branch
+  pull_request:
+  # On PRs in the merge queue
+  merge_group:
+  # After merges to main
+  push:
+    branches:
+      - main
+  # When a developer asks for a manual workflow run
+  workflow_dispatch:
+
+jobs:
+  build-rust:
+    name: 1. Build Rust examples
+    runs-on: ubuntu-latest
+    # Actions are pinned to a commit to prevent supply-chain attacks
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Build Rust in each example
+        run: |
+          # FIXME: handle spaces and special characters in example directory names (in all jobs)
+          for EXAMPLE in $(find examples -name Cargo.toml | sort); do
+            EXAMPLE=$(dirname "$EXAMPLE")
+            echo "Building Rust in '$EXAMPLE'..."
+            # cd, but using a stack of directories that can be popped off
+            pushd "$EXAMPLE"
+            cargo build --all-targets --all-features
+            popd
+            echo "'$EXAMPLE' Rust build succeeded"
+          done
+
+  test-rust:
+    name: 2. Test Rust examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Test Rust in each example
+        run: |
+          for EXAMPLE in $(find examples -name Cargo.toml | sort); do
+            EXAMPLE=$(dirname "$EXAMPLE")
+            echo "Testing Rust in '$EXAMPLE'..."
+            pushd "$EXAMPLE"
+            cargo test --all-targets --all-features
+            popd
+            echo "'$EXAMPLE' Rust tests succeeded"
+          done
+
+  run:
+    name: 3. Run Rust and C++ examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run Rust and C++ in each example
+        run: |
+          for EXAMPLE in $(find examples -type d -mindepth 1 -maxdepth 1 | sort); do
+            echo "Running '$EXAMPLE'..."
+            pushd "$EXAMPLE"
+            # If there is a run.sh script, use it to build and run the example
+            if [ -f run.sh ]; then
+              echo "Using 'run.sh' script to build and run '$EXAMPLE'..."
+              ./run.sh
+            else
+              echo "No 'run.sh' script found, using cargo run for '$EXAMPLE'..."
+              cargo run
+            fi
+            popd
+            echo "Running '$EXAMPLE' succeeded"
+          done
+
+  clippy-rust:
+    name: 4. Clippy lints on Rust examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run clippy on Rust in each example
+        run: |
+          for EXAMPLE in $(find examples -name Cargo.toml | sort); do
+            EXAMPLE=$(dirname "$EXAMPLE")
+            echo "Running Rust clippy on '$EXAMPLE'..."
+            pushd "$EXAMPLE"
+            cargo clippy --all-targets --all-features -- --deny warnings
+            popd
+            echo "'$EXAMPLE' Rust clippy checks succeeded"
+          done
+
+  doc-rust:
+    name: 5. Doc lints on Rust examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run doc checks on Rust in each example
+        run: |
+          for EXAMPLE in $(find examples -name Cargo.toml | sort); do
+            EXAMPLE=$(dirname "$EXAMPLE")
+            echo "Running Rust doc checks on '$EXAMPLE'..."
+            pushd "$EXAMPLE"
+            cargo doc --all-features
+            popd
+            echo "'$EXAMPLE' Rust doc checks succeeded"
+          done
+
+  fmt-rust:
+    name: 6. Code format on Rust examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run rustfmt checks in each example
+        run: |
+          for EXAMPLE in $(find examples -name Cargo.toml | sort); do
+            EXAMPLE=$(dirname "$EXAMPLE")
+            echo "Running Rust fmt checks on '$EXAMPLE'..."
+            pushd "$EXAMPLE"
+            cargo fmt --all -- --check
+            popd
+            echo "'$EXAMPLE' Rust fmt checks succeeded"
+          done
+
+  all:
+    name: All checks
+    # Always run this job, even if earlier steps were skipped (or failed):
+    # <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks#handling-skipped-but-required-checks>
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    needs:
+      - build-rust
+      - test-rust
+      - run
+      - clippy-rust
+      - doc-rust
+      - fmt-rust
+    steps:
+      - name: Fail if any other job failed
+        # Every job status needs to be checked here, because `always()` stops failures from propagating automatically
+        run: |
+          echo "Checking other jobs..."
+          [[ "${{ needs.build-rust.result }}" == "success" ]] || exit 1
+          [[ "${{ needs.test-rust.result }}" == "success" ]] || exit 1
+          [[ "${{ needs.run.result }}" == "success" ]] || exit 1
+          [[ "${{ needs.clippy-rust.result }}" == "success" ]] || exit 1
+          [[ "${{ needs.doc-rust.result }}" == "success" ]] || exit 1
+          [[ "${{ needs.fmt-rust.result }}" == "success" ]] || exit 1
