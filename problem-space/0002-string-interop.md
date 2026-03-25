@@ -130,7 +130,7 @@ The lack of seamless string interop has real consequences:
 - *Performance overhead* - Every C++ to Rust string conversion requires a copy and potentially a UTF-8 validation pass, which is unacceptable in hot code paths
 - *Safety risks* - Manual FFI string handling is error-prone, leading to use-after-free, buffer overflows, and undefined behaviour
 - *Adoption barrier* - Many C++ projects that want to incrementally adopt Rust are blocked or slowed down by string interop complexity
-- *API surface reduction* — Developers are forced to use CString or OsString which dramatically limits compatible API surface
+- *API surface reduction* — Developers are forced to use CString or OsString which dramatically limits compatible API surface, Rust's own string operation like `to_lowercase()` and `to_uppercase()` are inaccessible directly , requiring expensive conversions to `String` and back before any manipulation is possible.
 
 TODO: fill in the remainder of this section
 
