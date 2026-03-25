@@ -60,7 +60,7 @@ jobs:
 
       - name: Run Rust and C++ in each example
         run: |
-          for EXAMPLE in $(find examples -type d -depth 1 | sort); do
+          for EXAMPLE in $(find examples -type d -mindepth 1 -maxdepth 1 | sort); do
             echo "Running '$EXAMPLE'..."
             pushd "$EXAMPLE"
             # If there is a run.sh script, use it to build and run the example
