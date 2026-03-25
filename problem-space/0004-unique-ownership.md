@@ -17,7 +17,8 @@ For example, Zngur does this using `Ref` and `RefMut` types.
 Many C++ types can't be put on the Rust stack, because C++ doesn't support trivial relocatability, but Rust assumes all types are trivially relocatable.
 Fixing this might require C++ language changes, because using non-relocatable wrapper types in Rust significantly impacts ergonomics.
 
-Some users might benefit from custom move operation support in Rust.
+Some users might benefit from custom move operation support in Rust. Others would benefit from compiler changes that make the
+[`moveit` crate](https://docs.rs/moveit/latest/moveit/) easier to use.
 
 ### Example Code
 [example-code]: #example-code
@@ -127,6 +128,9 @@ TODO
 
 ## Prior art
 [prior-art]: #prior-art
+
+Ecosystem Crates:
+- [moveit](https://docs.rs/moveit/latest/moveit/)
 
 Rust Language/Library features:
 

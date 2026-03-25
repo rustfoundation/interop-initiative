@@ -1,0 +1,15 @@
+[package]
+name = "cargo-template"
+version = "0.1.0"
+edition = "2024"
+# Optional: A Rust script that's used to build the code
+build = "build.rs"
+
+# Prevent supply-chain attacks using "=version" to pin versions
+[dependencies]
+cpp = "=0.5.10"
+# Add any other Rust runtime dependencies here
+
+[build-dependencies]
+cpp_build = "=0.5.10"
+# Optional: if you need extra build script dependencies, add them here
