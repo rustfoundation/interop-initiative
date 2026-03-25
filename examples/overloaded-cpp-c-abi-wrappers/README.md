@@ -29,7 +29,7 @@ This keeps the overload logic in C++, while giving Rust explicit symbols to call
 From the repository root:
 
 ```bash
-cargo run --manifest-path examples/overloaded-cpp-from-rust/Cargo.toml
+cargo run --manifest-path examples/overloaded-cpp-c-abi-wrappers/Cargo.toml
 ```
 
 Expected output:

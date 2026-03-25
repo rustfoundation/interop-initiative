@@ -1,5 +1,5 @@
 [package]
-name = "overloaded-cpp-from-rust"
+name = "overloaded-cpp-c-abi-wrappers"
 version = "0.1.0"
 edition = "2024"
 # Run build.rs so Cargo compiles and links the C++ source.
