@@ -26,5 +26,6 @@ pushd rust-library
 cargo build
 popd
 # Build and run the C++ and Rust binary
-$CXX rust-library/target/debug/librust_library.a main.cpp -o main
+# This order is important, dependencies must be later than code that depends on them
+$CXX main.cpp rust-library/target/debug/librust_library.a -o main
 ./main
