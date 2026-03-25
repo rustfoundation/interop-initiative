@@ -1,4 +1,4 @@
-use cpp_build;
+//! Build script for the `cpp` crate
 
 /// Build the C++ code into a library that Rust can use
 fn main() {

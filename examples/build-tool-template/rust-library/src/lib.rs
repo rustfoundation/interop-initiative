@@ -1,6 +1,11 @@
 //! A Rust library that prints a message to the terminal
 
 /// Prints a Rust run message to the terminal
+///
+/// # Safety
+///
+/// The entire binary must only have one function with this un-mangled name.
+/// Callers must use the C calling convention to call this function.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn print_rust_message() {
     // Replace this with your Rust code
