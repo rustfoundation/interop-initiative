@@ -94,7 +94,11 @@ TODO: fill in the remainder of this section
 ## Impact
 [impact]: #impact
 
-TODO
+One large project uses cross-language LTO with the same version of LLVM in `rustc` and `clang`.
+has only caused one crash across millions of lines of code, and years of widespread operation.
+This was due to a `cxx` bug which did not mark a C++ type as having interior mutability in Rust.
+
+TODO: fill in the remainder of this section
 
 ## Guide-level explanation
 [guide-level-explanation]: #guide-level-explanation
@@ -134,11 +138,15 @@ TODO
 ## Experts & Champions
 [experts--champions]: #experts--champions
 
-David Sankel: cross-language LTO is an important problem to get solved.
+David Sankel: cross-language LTO is an important problem to get solved
+David Tolnay: cxx supports cross-language LTO with the same version of LLVM in `rustc` and `clang`
 
 TODO: fill in the remainder of this section
 
 ## Unresolved questions
 [unresolved-questions]: #unresolved-questions
 
-TODO
+How much does this actually matter in practice?
+That is, does the undefined behaviour cause actual issues at runtime?
+
+TODO: fill in the remainder of this section
