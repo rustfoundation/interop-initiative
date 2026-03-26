@@ -174,7 +174,9 @@ TODO: fill in the remainder of this section
 ## Unresolved questions
 [unresolved-questions]: #unresolved-questions
 
-- Should every C++ to Rust string conversion  validate UTF-8, even at a performance cost?
-- Is zero-copy string sharing between Rust and C++ ever possible without unsafe code?
+- Which use cases require UTF-8 validation for C++ to Rust string conversion?
+  - Do `OsString`, `CString`, and `Vec<u8>` cover most other use cases?
+  - Which use cases need custom interop types for performance?
+- Are there existing crates or code generation tools that provide a safe interface to zero-copy string sharing between Rust and C++?
 
 TODO: fill in the remainder of this section
