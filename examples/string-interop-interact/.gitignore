@@ -1,0 +1,17 @@
+# Rust build output
+target/
+Cargo.lock
+
+# Binary output
+main
+*.o
+*.a
+
+# macOS
+.DS_Store
+
+# CMake (if used)
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
