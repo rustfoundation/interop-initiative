@@ -9,7 +9,6 @@ pub extern "C" fn ask_name() {
 }
 
 /// # Safety
-
 // Step 2: Rust processes input from C++
 #[unsafe(no_mangle)] // Keep function name stable for FFI
 pub unsafe extern "C" fn process_name(name: *const c_char) -> *mut c_char {
@@ -30,7 +29,6 @@ pub unsafe extern "C" fn process_name(name: *const c_char) -> *mut c_char {
 }
 
 /// # Safety
-
 // Step 3: Free memory
 #[unsafe(no_mangle)] // Required for C++ to call this function
 pub unsafe extern "C" fn free_string(ptr: *mut c_char) {
