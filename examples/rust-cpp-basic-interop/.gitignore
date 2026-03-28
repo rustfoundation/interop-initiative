@@ -1,5 +1,6 @@
 # Rust build output
 target/
+Cargo.lock
 
 # Binary output
 main
