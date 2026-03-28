@@ -8,6 +8,8 @@ pub extern "C" fn ask_name() {
     println!("Rust: What is your name?"); // Print prompt from Rust side
 }
 
+/// # Safety
+
 // Step 2: Rust processes input from C++
 #[unsafe(no_mangle)] // Keep function name stable for FFI
 pub unsafe extern "C" fn process_name(name: *const c_char) -> *mut c_char {
@@ -26,6 +28,8 @@ pub unsafe extern "C" fn process_name(name: *const c_char) -> *mut c_char {
     // Convert Rust String → CString → raw pointer
     // `into_raw()` transfers ownership to C++ (Rust will NOT free it automatically)
 }
+
+/// # Safety
 
 // Step 3: Free memory
 #[unsafe(no_mangle)] // Required for C++ to call this function
