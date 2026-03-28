@@ -143,10 +143,11 @@ This example demonstrates a multi-step interaction between C++, Rust, and the us
     - Rust reconstructs the string and safely frees it
 
 **Summary**
-
+```text
 C++ → Rust (prompt)
 User → C++ (input)
 C++ → Rust (process)
 Rust → C++ (response)
 C++ → Rust (free memory)
+```
 
