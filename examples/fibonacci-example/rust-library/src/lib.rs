@@ -1,7 +1,12 @@
 use std::ffi::{c_uint, c_ulonglong};
 
-// Fibonacci function exposed to C++
-// Returns the nth Fibonacci number
+/// Calculates the nth Fibonacci number.
+///
+/// # Safety
+///
+/// This function is called from C++ via FFI.
+/// The caller must use the C calling convention and ensure
+/// the function is only called with a valid unsigned integer.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn fibonacci(n: c_uint) -> c_ulonglong {
     match n {
