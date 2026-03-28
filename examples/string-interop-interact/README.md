@@ -25,7 +25,7 @@ This example highlights ownership transfer across the FFI boundary using three k
 
 ---
 
-#### 🔹 Move (Rust → C++)
+### 🔹 Move (Rust → C++)
 
 ```rust
 CString::new(response).unwrap().into_raw();
