@@ -30,7 +30,7 @@ pub extern "C" fn process_name(name: *const c_char) -> *mut c_char {
 #[unsafe(no_mangle)] // Required for C++ to call this function
 pub extern "C" fn free_string(ptr: *mut c_char) {
     unsafe {
-        CString::from_raw(ptr);
+       let _ = CString::from_raw(ptr);
         // Reconstruct CString from raw pointer
         // When this goes out of scope, Rust automatically frees the memory
     }
