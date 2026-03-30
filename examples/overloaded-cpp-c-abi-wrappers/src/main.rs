@@ -1,5 +1,5 @@
-use std::ffi::{c_double, c_int};
 use overloaded_cpp_c_abi_wrappers::{call_overload_double, call_overload_int};
+use std::ffi::{c_double, c_int};
 
 fn main() {
     // Example inputs for each overload path.
