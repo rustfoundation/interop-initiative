@@ -1,4 +1,8 @@
 //! A Rust library that provides math functions callable from C++
+//!
+//! Note: overflow behavior differs between Rust and C++.
+//! Rust panics on overflow in debug mode and wraps in release mode,
+//! while C++ signed integer overflow is undefined behavior.
 
 /// Adds two integers and returns the result
 ///
