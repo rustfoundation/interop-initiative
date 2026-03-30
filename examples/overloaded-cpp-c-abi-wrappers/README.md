@@ -7,8 +7,8 @@ very small `extern "C"` wrappers with unique names. This provides the illusion t
 
 In this case:
 
-- `double_value_i32` forwards to `double_value(int)`
-- `double_value_f64` forwards to `double_value(double)`
+- `multiply_2_int` forwards to `multiply_2(int)`
+- `multiply_2_double` forwards to `multiply_2(double)`
 
 This keeps the overload logic in C++, while giving Rust explicit symbols to call.
 
@@ -35,8 +35,8 @@ cargo run --manifest-path examples/overloaded-cpp-c-abi-wrappers/Cargo.toml
 Expected output:
 
 ```text
-double_value(21) [int overload] -> 42
-double_value(21) [double overload] -> 42
+multiply_2(21) [int overload] -> 42
+multiply_2(21.0) [double overload] -> 42.0
 ```
 
 ## Why this matters
