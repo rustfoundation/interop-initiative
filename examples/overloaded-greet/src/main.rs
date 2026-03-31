@@ -3,8 +3,9 @@
 // but Rust doesn't support this. So we wrap each C++ overload with a
 // uniquely named extern "C" function, and call those from Rust.
 // telling rust about the c wrapper functions we made in main.cpp
+// using c_int instead of i32 bc c's int isnt always 32 bits on every platform
 unsafe extern "C" {
-    fn greet_number(x: i32);
+    fn greet_number(x: std::ffi::c_int);
     fn greet_name(x: *const std::ffi::c_char);
 }
 
@@ -27,7 +28,7 @@ mod tests {
     #[test]
     fn test_greet_overloads() {
         // call the int overload
-        unsafe { greet_number(42) };
+        unsafe { greet_number(42 as std::ffi::c_int) };
         // call the string overload
         unsafe {
             greet_name(c"test".as_ptr());
