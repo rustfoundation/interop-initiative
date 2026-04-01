@@ -9,18 +9,18 @@ pub struct LogMessage {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn log_message(msg: *const c_char) {
-    unsafe { print_log("[INFO]", msg); }
+pub unsafe extern "C" fn log_message(msg: *const c_char) {
+    unsafe { print_log("[INFO]", msg) };
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn log_warning(msg: *const c_char) {
-    unsafe { print_log("[WARNING]", msg); }
+pub unsafe extern "C" fn log_warning(msg: *const c_char) {
+    unsafe { print_log("[WARNING]", msg) };
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn log_error(msg: *const c_char) {
-    unsafe { print_log("[ERROR]", msg); }
+pub unsafe extern "C" fn log_error(msg: *const c_char) {
+    unsafe { print_log("[ERROR]", msg) };
 }
 
 #[unsafe(no_mangle)]
