@@ -1,6 +1,7 @@
+
 - Problem Name: rust_cpp_basic_interop
 - Start Date: 21-02-2026
-- Problem Statement PR:
+- Problem Statement PR: https://github.com/rustfoundation/interop-initiative/pull/30
 
 ## Summary
 [summary]: #summary
@@ -19,63 +20,99 @@ In this example the goal is to allow a C++ program to call functions written in 
 [example-code]: #example-code
 
 ```rust
-use std::ffi::CStr; //Cstr is used to convert C-style string 'const char*' into rust string 
-use std::os::raw::c_char; // same matching C-style 'char'
+use std::ffi::CStr; // Convert C-style string to Rust string
+use std::os::raw::c_char;
 
-// exposing the the function to c++
-#[unsafe(no_mangle)] // this line used keep the function name of the of both C and rust same . This is essential for FFI 
-pub extern "C" fn log_message(msg: *const c_char) { 
-/*pub: its for making function public so both can access the function
-extern: This keyword tells the 'rustc' that the function using different calling convention other than its  ABI
-C: its telling to use ABI of the C-programming */
-    print_log("[INFO]", msg);
+// C-compatible struct shared between C++ and Rust
+#[repr(C)]
+pub struct LogMessage {
+    pub msg: *const c_char,
+    pub time: i64,
+    pub check: bool,
 }
 
-//expose another function to c++ (no name mangling + C ABI)
+/// # Safety
+/// The caller must ensure that `msg` is a valid null-terminated C string.
 #[unsafe(no_mangle)]
-pub extern "C" fn log_warning(msg: *const c_char) {
-    print_log("[WARNING]", msg);
+pub unsafe extern "C" fn log_message(msg: *const c_char) {
+    unsafe { print_log("[INFO]", msg); }
 }
 
-//expose another function to c++ (no name mangling + C ABI)
+/// # Safety
+/// The caller must ensure that `msg` is a valid null-terminated C string.
 #[unsafe(no_mangle)]
-pub extern "C" fn log_error(msg: *const c_char) {
-    print_log("[ERROR]", msg);
+pub unsafe extern "C" fn log_warning(msg: *const c_char) {
+    unsafe { print_log("[WARNING]", msg); }
 }
 
-// Internal helper function (not exposed to C++)
-fn print_log(level: &str, msg: *const c_char) {
-    let c_str = unsafe { CStr::from_ptr(msg) };//converting the raw C string pointer into Rust CStr
-    let str_slice = c_str.to_str().unwrap();//Convert CStr into Rust string slice (&str)
+/// # Safety
+/// The caller must ensure that `msg` is a valid null-terminated C string.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn log_error(msg: *const c_char) {
+    unsafe { print_log("[ERROR]", msg); }
+}
 
-    println!("{} {}", level, str_slice);//printing 
+/// # Safety
+/// The caller must ensure that `log` is a valid pointer to LogMessage.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn log_struct(log: *const LogMessage) {
+    if log.is_null() {
+        return;
+    }
+
+    let log_ref = unsafe { &*log };
+    let c_str = unsafe { CStr::from_ptr(log_ref.msg) };
+    let message = c_str.to_str().unwrap();
+
+    println!("Message: {}", message);
+    println!("Time: {}", log_ref.time);
+    println!("Check: {}", log_ref.check);
+}
+
+// Internal helper function
+unsafe fn print_log(level: &str, msg: *const c_char) {
+    let c_str = unsafe { CStr::from_ptr(msg) };
+    let str_slice = c_str.to_str().unwrap();
+
+    println!("{} {}", level, str_slice);
 }
 ```
 
 ```cpp
+#include <iostream>
+#include <cstdint>  // for int64_t
 
-#include <iostream>  // For std::cout
+// Struct must match Rust layout
+struct LogMessage {
+    const char* msg;
+    int64_t time;
+    bool check;
+};
 
-// Declare Rust functions so C++ knows about them
-// extern "C" ensures the function names match Rust (no C++ name mangling)
-extern "C" void log_message(const char* msg);
-extern "C" void log_warning(const char* msg);
-extern "C" void log_error(const char* msg);
+// Declare Rust functions
+extern "C" void log_struct(const LogMessage* log);
 
 int main() {
-    // Call Rust function with a message
-    log_message("System started");
+    LogMessage log1 = {"System started", 1001, true};
+    LogMessage log2 = {"Low memory warning", 1002, false};
+    LogMessage log3 = {"Critical failure!", 1003, true};
 
-    // Call Rust function with warning message
-    log_warning("Low memory warning");
+    log_struct(&log1);
+    log_struct(&log2);
+    log_struct(&log3);
 
-    // Call Rust function with error message
-    log_error("Critical failure!");
-
-    return 0;  // End of program
+    return 0;
 }
-
 ```
+
+## Key Concepts
+
+- `#[repr(C)]` ensures memory layout compatibility
+- `extern "C"` enables cross-language function calls
+- `#[no_mangle]` prevents name mangling
+- `unsafe` is required for raw pointer handling in FFI
+
+
 ### How to Build and Run
 
 Make sure you have Rust (Cargo) and a C++ compiler (clang++ or g++) installed.
@@ -95,9 +132,18 @@ This will compile the Rust code into a static library and link it with the C++ p
 ## Example Output
 
 ./main
-[INFO] System started
-[WARNING] Low memory warning
-[ERROR] Critical failure!
+```
+Message: System started
+Time: 1001
+Check: true
+Message: Low memory warning
+Time: 1002
+Check: false
+Message: Critical failure!
+Time: 1003
+Check: true
+```
+
 
 
 ## Features
@@ -122,13 +168,14 @@ This will compile the Rust code into a static library and link it with the C++ p
 
 ### Acceptance Criteria
 
-This example demonstrates basic Rust and C++ interoperability using FFI by passing C-style strings from C++ to Rust.
+This example demonstrates Rust and C++ interoperability using FFI by passing structured data from C++ to Rust.
 
 The example handles:
 
-- Passing `const char*` strings from C++ into Rust functions
-- Converting C-style strings into Rust string slices using `CStr`
-- Calling multiple Rust functions from a C++ program through a shared interface
+- Passing structured data (`LogMessage`) from C++ to Rust
+- Ensuring memory layout compatibility using `#[repr(C)]`
+- Using fixed-width integer types (`int64_t` ↔ `i64`) for cross-platform safety
+- Handling raw pointers safely using `unsafe` and documented safety contracts
 
 ## Limitations
 
