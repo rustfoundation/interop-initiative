@@ -8,21 +8,30 @@ pub struct LogMessage {
     pub check: bool,
 }
 
+/// # Safety
+/// The caller must ensure that `msg` is a valid null-terminated C string.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn log_message(msg: *const c_char) {
     unsafe { print_log("[INFO]", msg) };
 }
 
+/// # Safety
+/// The caller must ensure that `msg` is a valid null-terminated C string.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn log_warning(msg: *const c_char) {
     unsafe { print_log("[WARNING]", msg) };
 }
 
+/// # Safety
+/// The caller must ensure that `msg` is a valid null-terminated C string.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn log_error(msg: *const c_char) {
     unsafe { print_log("[ERROR]", msg) };
 }
 
+/// # Safety
+/// The caller must ensure that `log` is a valid non-null pointer to a `LogMessage`,
+/// and that all its fields are valid.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn log_struct(log: *const LogMessage) {
     if log.is_null() {
