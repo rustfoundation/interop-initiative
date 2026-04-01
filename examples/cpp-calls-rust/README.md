@@ -13,3 +13,4 @@ This example shows how to call a Rust function from C++ using a Makefile.
 
 ```sh
 make run
+```

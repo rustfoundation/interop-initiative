@@ -3,7 +3,6 @@ unsafe extern "C" {
     fn multiply(a: i32, b: i32) -> i32;
 }
 
-
 // Expose this function to C++ using the C ABI.
 // `no_mangle` is marked unsafe because it controls the symbol name at link time.
 #[unsafe(no_mangle)]
