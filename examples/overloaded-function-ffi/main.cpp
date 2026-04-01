@@ -9,8 +9,9 @@ double add(double a, double b) {
     return a + b;
 }
 
-// Wrapper functions with unique names
-// These are required because Rust cannot call overloaded functions directly
+// Exposing a simple Rust function via FFI.
+// While Rust supports generics and traits for abstraction,
+// FFI requires concrete function signatures with fixed symbol names.
 extern "C" int add_int(int a, int b) {
     return add(a, b);
 }

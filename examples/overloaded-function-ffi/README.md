@@ -19,6 +19,8 @@ In C++, function overloading allows multiple functions to share the same name wi
 
 Many C++ libraries rely heavily on overloaded functions. When calling such code from Rust, it is not possible to directly reference overloaded functions through FFI.
 
+Rust supports generics and traits, which can provide behavior similar to function overloading. However, these abstractions do not work across FFI boundaries, because FFI requires concrete function names and fixed signatures.
+
 To work around this limitation, developers must create wrapper functions with unique names. These wrappers allow Rust to correctly link and call the intended function.
 
 ## Requirements
