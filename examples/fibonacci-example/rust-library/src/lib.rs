@@ -1,17 +1,38 @@
 use std::ffi::{c_uint, c_ulonglong};
 
+/// Result type for fibonacci, compatible with C++
+#[repr(C)]
+pub struct FibResult {
+    /// The fibonacci value (only valid if overflow is 0)
+    pub value: c_ulonglong,
+    /// 0 = success, 1 = overflow (n was too large)
+    pub overflow: u8,
+}
+
 /// Calculates the nth Fibonacci number.
 ///
 /// # Safety
 ///
 /// This function is called from C++ via FFI.
-/// The caller must use the C calling convention and ensure
-/// the function is only called with a valid unsigned integer.
+/// The caller must use the C calling convention.
+/// Check the overflow field before using the value.
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn fibonacci(n: c_uint) -> c_ulonglong {
+pub unsafe extern "C" fn fibonacci(n: c_uint) -> FibResult {
+    if n > 93 {
+        return FibResult {
+            value: 0,
+            overflow: 1,
+        };
+    }
     match n {
-        0 => 0,
-        1 => 1,
+        0 => FibResult {
+            value: 0,
+            overflow: 0,
+        },
+        1 => FibResult {
+            value: 1,
+            overflow: 0,
+        },
         _ => {
             let mut a: c_ulonglong = 0;
             let mut b: c_ulonglong = 1;
@@ -20,7 +41,10 @@ pub unsafe extern "C" fn fibonacci(n: c_uint) -> c_ulonglong {
                 a = b;
                 b = temp;
             }
-            b
+            FibResult {
+                value: b,
+                overflow: 0,
+            }
         }
     }
 }
