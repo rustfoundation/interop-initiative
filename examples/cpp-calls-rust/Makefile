@@ -3,7 +3,7 @@
 all:
 	cd rust && cargo build --release
 
-	g++ cpp/main.cpp -Wl,--start-group -Lrust/target/release -lrustlib -o main -Wl,--end-group
+	g++ cpp/main.cpp cpp/multiply.cpp -Wl,--start-group -Lrust/target/release -lrustlib -o main -Wl,--end-group
 
 
 run: all
