@@ -11,6 +11,11 @@ double add(double a, double b) {
     return a + b;
 }
 
+// This overload takes three integers — overloading on number of arguments
+int add(int a, int b, int c) {
+    return a + b + c;
+}
+
 // Rust can't call the overloaded functions directly because:
 // 1. C++ mangles the names (adds type info to the symbol name)
 // 2. Rust doesn't support having two functions with the same name
@@ -24,4 +29,9 @@ extern "C" int add_int(int a, int b) {
 
 extern "C" double add_double(double a, double b) {
     return add(a, b);    // C++ picks the double overload because a and b are doubles
+}
+
+//this is the  Wrapper for the three-argument overload
+extern "C" int add_int3(int a, int b, int c) {
+    return add(a, b, c);
 }

@@ -11,6 +11,8 @@ unsafe extern "C" {
     fn add_int(a: c_int, b: c_int) -> c_int;
     // Calls the C++ add(double, double) overload
     fn add_double(a: c_double, b: c_double) -> c_double;
+
+    fn add_int3(a: c_int, b: c_int, c: c_int) -> c_int;
 }
 
 fn main() {
@@ -21,4 +23,9 @@ fn main() {
     // Call the double overload
     let double_result = unsafe { add_double(2.5, 5.7) };
     println!("add_double(2.5, 5.7) = {double_result}");
+
+    // Overloading on number of arguments:
+    // Same function name "add" in C++, but takes three arguments instead of two
+    let three_arg_result = unsafe { add_int3(10, 20, 30) };
+    println!("add_int3(10, 20, 30) = {three_arg_result}");
 }
