@@ -1,24 +1,27 @@
-// A C++ program that demonstrates lossless integer roundtrips between Rust and C++
+// Demonstrates lossless integer roundtrips between C++ and Rust
 #include <iostream>
 
-// Declare the Rust function so C++ can call it
-extern "C" unsigned int roundtrip_integer(unsigned int value);
+// Mirror the Rust RoundtripResult struct
+struct RoundtripResult {
+    unsigned int value;
+    unsigned char was_lossy;
+};
 
-// Demonstrates sending an integer to Rust and receiving it back losslessly
+// Declare the Rust function
+extern "C" RoundtripResult roundtrip_integer(unsigned int value);
+
 int main(void) {
-    unsigned int value = 4294967295; // u32::MAX - would truncate if handled incorrectly
-    
-    // Send integer to Rust and receive it back
-    std::cout << "C++ sending value: " << value << std::endl;
-    
-    unsigned int result = roundtrip_integer(value);
-    
-    std::cout << "C++ received back: " << result << std::endl;
-    
-    // Verify the roundtrip was lossless
-    if (value == result) {
-        std::cout << "Roundtrip was lossless!" << std::endl;
-    }
-    
+    // Test small value - should be lossless
+    unsigned int small = 42;
+    RoundtripResult r1 = roundtrip_integer(small);
+    std::cout << "roundtrip(" << small << ") = " << r1.value
+              << " | lossy: " << (int)r1.was_lossy << std::endl;
+
+    // Test large value - may be lossy
+    unsigned int large = 4294967295; // u32::MAX
+    RoundtripResult r2 = roundtrip_integer(large);
+    std::cout << "roundtrip(" << large << ") = " << r2.value
+              << " | lossy: " << (int)r2.was_lossy << std::endl;
+
     return 0;
 }
