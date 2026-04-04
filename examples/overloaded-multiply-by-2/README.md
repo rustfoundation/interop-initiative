@@ -2,8 +2,8 @@
 
 This example shows a practical workaround for calling overloaded C++ functions from Rust.
 
-Rust has no concept of overloading and as such, can not do C++ overload resolution at the FFI boundary. The example solves that by keeping the C++ overloads as it is and then, adding
-very small `extern "C"` wrappers with unique names. This provides the illusion to Rust that they are different functions which we can then work with.
+Rust has no first class support for overloading and as such, can not do C++ overload resolution at the FFI boundary. The example solves that by keeping the C++ overloads as it is and then, adding
+very small `extern "C"` wrappers with unique names. This provides the illusion to Rust that they are functions with different names (technically, they have different names though, but from the FFI boundary) which we can then work with.
 
 In this case:
 
@@ -17,7 +17,7 @@ This keeps the overload logic in C++, while giving Rust explicit symbols to call
 - A C++ overload set with two functions sharing one name.
 - A C ABI wrapper layer that selects the intended overload.
 - Rust calling those wrappers through FFI and exposing clear, safe helper APIs.
-- Building Rust and C++ together using Cargo and a simple `build.rs` script.
+- Building Rust and C++ together using the `cpp` crate and a simple `build.rs` script.
 
 ## Requirements
 
@@ -29,7 +29,7 @@ This keeps the overload logic in C++, while giving Rust explicit symbols to call
 From the repository root:
 
 ```bash
-cargo run --manifest-path examples/overloaded-cpp-c-abi-wrappers/Cargo.toml
+cargo run --manifest-path examples/overloaded-multiply-by-2/Cargo.toml
 ```
 
 Expected output:
