@@ -19,7 +19,7 @@ This directory contains interop code examples for use cases and problem statemen
 
 ### How to Add a New Example
 
-1. Add a new directory in `interop/examples`, with a useful name
+1. Add a new directory in `interop-initiative/examples`, with a useful name
 2. Add a runnable example, choosing one of these methods based on the primary build tool:
 
     - If you are using a C/C++ build tool, put the build tool command in a `run.sh` script
