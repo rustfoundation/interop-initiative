@@ -1,8 +1,9 @@
 //! A Rust library that exposes a Person struct to C++ via FFI
 //!
 //! Demonstrates passing structs across the FFI boundary using opaque pointers.
-//! C++ never sees inside the Rust struct — it only holds a pointer and calls
-//! Rust functions to create, inspect, and free the data.
+//! Person contains a nested Location struct — C++ never sees either struct
+//! directly. It only holds a pointer and calls Rust functions to create,
+//! inspect, and free the data.
 //!
 //! Note: memory allocated by Rust must be freed by Rust. C++ must not call
 //! `free()` or `delete` on pointers returned by these functions.
@@ -20,19 +21,35 @@ pub enum Gender {
     Unknown,
 }
 
-/// A person with a name, gender, and age
+/// A physical location — nested inside Person
+///
+/// C++ never sees this struct directly. It is owned by Person and freed
+/// when the Person is released.
+#[derive(Debug)]
+pub struct Location {
+    city: String,
+    country: String,
+}
+
+/// A person with a name, gender, age, and location
 pub struct Person {
     first_name: String,
     last_name: String,
     gender: Gender,
     age: u8,
+    location: Location,
 }
 
 impl Person {
     fn print_info(&self) {
         println!(
-            "Person {{ first_name: \"{}\", last_name: \"{}\", gender: {:?}, age: {} }}",
-            self.first_name, self.last_name, self.gender, self.age
+            "Person {{ \"{} {}\", gender: {:?}, age: {}, city: \"{}\", country: \"{}\" }}",
+            self.first_name,
+            self.last_name,
+            self.gender,
+            self.age,
+            self.location.city,
+            self.location.country
         );
     }
 }
@@ -54,7 +71,8 @@ impl Drop for Person {
 ///
 /// The entire binary must only have one function with this un-mangled name.
 /// Callers must use the C calling convention to call this function.
-/// `first_name` and `last_name` must be valid, non-null, null-terminated C strings.
+/// `first_name`, `last_name`, `city`, and `country` must be valid, non-null,
+/// null-terminated C strings.
 /// The returned pointer must be freed by calling `release_person`.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn create_person(
@@ -62,11 +80,19 @@ pub unsafe extern "C" fn create_person(
     last_name: *const c_char,
     gender: c_uchar,
     age: c_uchar,
+    city: *const c_char,
+    country: *const c_char,
 ) -> *mut Person {
     let first = unsafe { CStr::from_ptr(first_name) }
         .to_string_lossy()
         .into_owned();
     let last = unsafe { CStr::from_ptr(last_name) }
+        .to_string_lossy()
+        .into_owned();
+    let city_str = unsafe { CStr::from_ptr(city) }
+        .to_string_lossy()
+        .into_owned();
+    let country_str = unsafe { CStr::from_ptr(country) }
         .to_string_lossy()
         .into_owned();
 
@@ -81,6 +107,10 @@ pub unsafe extern "C" fn create_person(
         last_name: last,
         gender: g,
         age,
+        location: Location {
+            city: city_str,
+            country: country_str,
+        },
     };
 
     Box::into_raw(Box::new(person))
@@ -128,8 +158,19 @@ mod tests {
     fn test_create_and_release() {
         let first = CString::new("Alice").unwrap();
         let last = CString::new("Smith").unwrap();
+        let city = CString::new("Lagos").unwrap();
+        let country = CString::new("Nigeria").unwrap();
 
-        let ptr = unsafe { create_person(first.as_ptr(), last.as_ptr(), 0, 30) };
+        let ptr = unsafe {
+            create_person(
+                first.as_ptr(),
+                last.as_ptr(),
+                0,
+                30,
+                city.as_ptr(),
+                country.as_ptr(),
+            )
+        };
         assert!(!ptr.is_null());
 
         unsafe { print_person(ptr) };

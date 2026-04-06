@@ -1,8 +1,10 @@
 // A C++ program that creates and uses a Rust Person struct via FFI
 //
-// The Person struct is opaque — C++ only holds a pointer to it and uses
-// Rust functions to create, inspect, and free it. This is the standard
-// pattern for passing heap-allocated Rust data to C++.
+// Person contains a nested Location struct (city and country). C++ never
+// sees either struct — it passes the city and country as plain strings when
+// creating the person, and Rust builds the nested Location internally.
+// This is the standard pattern for passing nested heap-allocated Rust data
+// to C++.
 //
 // Adapted from: https://github.com/wisonye/rust-ffi-demo
 
@@ -15,7 +17,8 @@ struct Person;
 // Declare the Rust FFI functions
 extern "C" {
     Person *create_person(const char *first_name, const char *last_name,
-                          uint8_t gender, uint8_t age);
+                          uint8_t gender, uint8_t age,
+                          const char *city, const char *country);
     void print_person(const Person *ptr);
     void release_person(Person *ptr);
 }
@@ -24,7 +27,8 @@ int main(void) {
     std::cout << "Creating a Person in Rust from C++..." << std::endl;
 
     // gender: 0 = Female, 1 = Male, 2+ = Unknown
-    Person *alice = create_person("Alice", "Smith", 0, 30);
+    // city and country are plain strings — Rust builds the Location internally
+    Person *alice = create_person("Alice", "Smith", 0, 30, "Lagos", "Nigeria");
 
     std::cout << "Printing person info (via Rust):" << std::endl;
     print_person(alice);
