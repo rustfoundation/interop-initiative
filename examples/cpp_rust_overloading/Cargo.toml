@@ -1,0 +1,9 @@
+[package]
+name = "cpp_rust_overloading"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[build-dependencies]
+cc = "1.0"
