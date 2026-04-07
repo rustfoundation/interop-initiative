@@ -123,6 +123,9 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
+Compatibility tooling:
+- [Crubit's protobuf layouts are identical in Rust and C++](https://crubit.rs/types/protobuf.html)
+
 Compiler arguments:
 
 - The [-Zrandomize-layout](https://doc.rust-lang.org/nightly/unstable-book/compiler-flags/randomize-layout.html)
