@@ -48,3 +48,12 @@ pub unsafe extern "C" fn fibonacci(n: c_uint) -> FibResult {
         }
     }
 }
+#[test]
+fn test_boundary_value() {
+    unsafe {
+        let result = fibonacci(93);
+        assert_eq!(result.overflow, 0);
+        let result = fibonacci(94);
+        assert_eq!(result.overflow, 1);
+    }
+}
