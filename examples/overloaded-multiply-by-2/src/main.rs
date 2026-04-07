@@ -81,7 +81,6 @@ mod tests {
 
     #[test]
     fn calls_double_overload() {
-        let result = call_overload_double(21.0);
-        assert!((result - 42.0).abs() < f64::EPSILON);
+        assert_eq!(call_overload_double(21.0), 42.0);
     }
 }
