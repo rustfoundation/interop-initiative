@@ -48,10 +48,13 @@ pub unsafe extern "C" fn fibonacci(n: c_uint) -> FibResult {
         }
     }
 }
+
 #[test]
 fn test_boundary_value() {
     unsafe {
         let result = fibonacci(93);
+        // <https://www.wolframalpha.com/input/?i=Fibonacci+93>
+        assert_eq!(result.value, 12200160415121876738);
         assert_eq!(result.overflow, 0);
         let result = fibonacci(94);
         assert_eq!(result.overflow, 1);
