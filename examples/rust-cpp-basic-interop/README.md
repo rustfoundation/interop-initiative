@@ -20,97 +20,39 @@ In this example the goal is to allow a C++ program to call functions written in 
 [example-code]: #example-code
 
 ```rust
-use std::ffi::CStr; // Convert C-style string to Rust string
-use std::os::raw::c_char;
-
-// C-compatible struct shared between C++ and Rust
-#[repr(C)]
-pub struct LogMessage {
-    pub msg: *const c_char,
-    pub time: i64,
-    pub check: bool,
-}
-
-/// # Safety
-/// The caller must ensure that `msg` is a valid null-terminated C string.
-#[unsafe(no_mangle)]
-pub unsafe extern "C" fn log_message(msg: *const c_char) {
-    unsafe { print_log("[INFO]", msg); }
-}
-
-/// # Safety
-/// The caller must ensure that `msg` is a valid null-terminated C string.
-#[unsafe(no_mangle)]
-pub unsafe extern "C" fn log_warning(msg: *const c_char) {
-    unsafe { print_log("[WARNING]", msg); }
-}
-
-/// # Safety
-/// The caller must ensure that `msg` is a valid null-terminated C string.
-#[unsafe(no_mangle)]
-pub unsafe extern "C" fn log_error(msg: *const c_char) {
-    unsafe { print_log("[ERROR]", msg); }
-}
-
-/// # Safety
-/// The caller must ensure that `log` is a valid pointer to LogMessage.
-#[unsafe(no_mangle)]
-pub unsafe extern "C" fn log_struct(log: *const LogMessage) {
-    if log.is_null() {
-        return;
-    }
-
-    let log_ref = unsafe { &*log };
-    let c_str = unsafe { CStr::from_ptr(log_ref.msg) };
-    let message = c_str.to_str().unwrap();
-
-    println!("Message: {}", message);
-    println!("Time: {}", log_ref.time);
-    println!("Check: {}", log_ref.check);
-}
-
-// Internal helper function
-unsafe fn print_log(level: &str, msg: *const c_char) {
-    let c_str = unsafe { CStr::from_ptr(msg) };
-    let str_slice = c_str.to_str().unwrap();
-
-    println!("{} {}", level, str_slice);
-}
+ [`src/lib.rs`](https://github.com/shashu8660/interop-initiative/blob/add-example1/examples/rust-cpp-basic-interop/src/lib.rs)
 ```
 
 ```cpp
-#include <iostream>
-#include <cstdint>  // for int64_t
-
-// Struct must match Rust layout
-struct LogMessage {
-    const char* msg;
-    int64_t time;
-    bool check;
-};
-
-// Declare Rust functions
-extern "C" void log_struct(const LogMessage* log);
-
-int main() {
-    LogMessage log1 = {"System started", 1001, true};
-    LogMessage log2 = {"Low memory warning", 1002, false};
-    LogMessage log3 = {"Critical failure!", 1003, true};
-
-    log_struct(&log1);
-    log_struct(&log2);
-    log_struct(&log3);
-
-    return 0;
-}
+[`main.cpp`](https://github.com/shashu8660/interop-initiative/blob/add-example1/examples/rust-cpp-basic-interop/main.cpp)
 ```
+
+### Note:
+
+What can break the code and why this problem exists :
+
+Rust and C++ handel data , memory , and safety in different ways, which makes interoperability challenging .
+- C++ allows platform-dependent types like `long` etc 
+- Rust use fixed type like `i64`.
+- Rust focuses on safety , while C++ allows more flexibility , which can lead to errors if not handled carefully 
+
+for example :
+
+- `long` in c++
+- Linux/macos -> 8 bytes
+- windows -> 4 bytes
+
+- `i64` in Rust 
+- always 8 bytes
 
 ## Key Concepts
 
-- `#[repr(C)]` ensures memory layout compatibility
+- `#[repr(C)]` ensures memory layout compatibility, Always use this for shared structs
 - `extern "C"` enables cross-language function calls
 - `#[no_mangle]` prevents name mangling
 - `unsafe` is required for raw pointer handling in FFI
+- Use fixed-width types (`int64_t`, `i64`)
+- Avoid platform-dependent types like `long`
 
 
 ### How to Build and Run
@@ -166,19 +108,22 @@ Check: true
 3. The C++ program calls Rust functions using FFI
 4. Makefile or CMake coordinates the build process
 
-### Acceptance Criteria
+### What this example demonstrates 
 
-This example demonstrates Rust and C++ interoperability using FFI by passing structured data from C++ to Rust.
+This example showa how to safely pass struct between C++ to Rust.
 
 The example handles:
 
-- Passing structured data (`LogMessage`) from C++ to Rust
-- Ensuring memory layout compatibility using `#[repr(C)]`
-- Using fixed-width integer types (`int64_t` ↔ `i64`) for cross-platform safety
-- Handling raw pointers safely using `unsafe` and documented safety contracts
+- Using `#[repr(C)]` to quarentee layout compatibilty 
+- Using fixed -width types (`int64_t` & `i64`)
+- Passing raw pointer across FFI
+- safely reading data in Rust using `unsafe`
 
 ## Limitations
 
+This example highlights several current limitations:
+
 - Manual integration between Cargo and C++ build systems
-- No unified dependency management
+- No unified dependency management , Rust uses Cargo and C++ uses make or cmake 
 - Platform-specific linking differences (macOS, Linux, Windows)
+- Unsafe code is required for pointer handling
