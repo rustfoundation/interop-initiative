@@ -1,0 +1,11 @@
+[package]
+name = "rustlib"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "rustlib"
+crate-type = ["staticlib"]
+
+[build-dependencies]
+cc = "1.2"
