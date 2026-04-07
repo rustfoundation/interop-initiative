@@ -1,0 +1,9 @@
+[package]
+name = "rust-library"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
