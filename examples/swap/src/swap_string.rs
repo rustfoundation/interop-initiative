@@ -11,8 +11,9 @@ pub unsafe extern "C" fn swap_pointers(a: *mut *const c_char, b: *mut *const c_c
 
 #[no_mangle]
 /// # Safety
-/// - a and b are writable pointers to buffers.
-/// - Buffer do not overlap.
+/// - a and b are writable non-null pointers to buffers.
+/// - a_size and b_size must be less than or equal to the allocated sizes of a and b.
+/// - Buffers a and b must not overlap.
 pub unsafe extern "C" fn swap_strings(a: *mut c_char, b: *mut c_char, a_size: u32, b_size: u32) {
     let a_slice = slice::from_raw_parts_mut(a as *mut u8, a_size as usize);
     let b_slice = slice::from_raw_parts_mut(b as *mut u8, b_size as usize);
