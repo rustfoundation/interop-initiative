@@ -5,12 +5,16 @@
 //! directly. It only holds a pointer and calls Rust functions to create,
 //! inspect, and free the data.
 //!
-//! Note: memory allocated by Rust must be freed by Rust. C++ must not call
-//! `free()` or `delete` on pointers returned by these functions.
+//! Also demonstrates the string return pattern: `get_person_info` returns a
+//! Rust-allocated C string that must be freed with `release_get_person_info`.
+//! C++ must never call `free()` or `delete` on it directly.
+//!
+//! Note: all memory allocated by Rust must be freed by Rust. C++ must not
+//! call `free()` or `delete` on pointers returned by these functions.
 //!
 //! Adapted from: <https://github.com/wisonye/rust-ffi-demo>
 
-use std::ffi::CStr;
+use std::ffi::{CStr, CString};
 use std::os::raw::{c_char, c_uchar};
 
 /// Gender enum — C++ passes an integer, Rust maps it to this
@@ -149,6 +153,54 @@ pub unsafe extern "C" fn release_person(ptr: *mut Person) {
     }
 }
 
+/// Returns a Rust-allocated C string describing the person
+///
+/// The string is allocated by Rust and must be freed by calling
+/// `release_get_person_info`. C++ must not call `free()` or `delete` on it.
+///
+/// # Safety
+///
+/// The entire binary must only have one function with this un-mangled name.
+/// Callers must use the C calling convention to call this function.
+/// `ptr` must be a valid pointer returned by `create_person`, or null.
+/// Returns null if `ptr` is null.
+/// The returned pointer must be freed by calling `release_get_person_info`.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn get_person_info(ptr: *const Person) -> *mut c_char {
+    if ptr.is_null() {
+        return std::ptr::null_mut();
+    }
+    let person = unsafe { &*ptr };
+    let info = format!(
+        "{} {}, gender: {:?}, age: {}, city: {}, country: {}",
+        person.first_name,
+        person.last_name,
+        person.gender,
+        person.age,
+        person.location.city,
+        person.location.country
+    );
+    CString::new(info).unwrap_or_default().into_raw()
+}
+
+/// Frees a string returned by `get_person_info`
+///
+/// # Safety
+///
+/// The entire binary must only have one function with this un-mangled name.
+/// Callers must use the C calling convention to call this function.
+/// `ptr` must be a pointer returned by `get_person_info`, or null.
+/// After calling this, the pointer must not be used again.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn release_get_person_info(ptr: *mut c_char) {
+    if ptr.is_null() {
+        return;
+    }
+    unsafe {
+        drop(CString::from_raw(ptr));
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -178,9 +230,43 @@ mod tests {
     }
 
     #[test]
+    fn test_get_and_release_info() {
+        let first = CString::new("Bob").unwrap();
+        let last = CString::new("Jones").unwrap();
+        let city = CString::new("Abuja").unwrap();
+        let country = CString::new("Nigeria").unwrap();
+
+        let ptr = unsafe {
+            create_person(
+                first.as_ptr(),
+                last.as_ptr(),
+                1,
+                25,
+                city.as_ptr(),
+                country.as_ptr(),
+            )
+        };
+        assert!(!ptr.is_null());
+
+        let info_ptr = unsafe { get_person_info(ptr) };
+        assert!(!info_ptr.is_null());
+
+        // Read the string back to verify it contains the expected data
+        let info = unsafe { CStr::from_ptr(info_ptr) }.to_string_lossy();
+        assert!(info.contains("Bob Jones"));
+        assert!(info.contains("Abuja"));
+
+        unsafe { release_get_person_info(info_ptr) };
+        unsafe { release_person(ptr) };
+    }
+
+    #[test]
     fn test_null_safety() {
         // These should not crash
         unsafe { print_person(std::ptr::null()) };
         unsafe { release_person(std::ptr::null_mut()) };
+        let null_info = unsafe { get_person_info(std::ptr::null()) };
+        assert!(null_info.is_null());
+        unsafe { release_get_person_info(std::ptr::null_mut()) };
     }
 }
