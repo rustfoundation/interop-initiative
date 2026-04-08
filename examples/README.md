@@ -31,4 +31,3 @@ These checks aren't included in CI, because they vary too much between compilers
     - `c++ -Wall` (the equivalent of Rust `clippy`)
     - C++ doc lints
     - C++ code formatting
-
