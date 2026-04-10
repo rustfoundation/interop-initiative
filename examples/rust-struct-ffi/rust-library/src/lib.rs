@@ -9,6 +9,19 @@
 //! Rust-allocated C string that must be freed with `release_get_person_info`.
 //! C++ must never call `free()` or `delete` on it directly.
 //!
+//! ## Interop differences worth knowing
+//!
+//! - **Memory ownership:** Rust allocates with `Box`, which uses Rust's
+//!   allocator. C++ must not call `free()` or `delete` on these pointers —
+//!   only the matching Rust `release_*` function will use the right allocator.
+//! - **Drop order:** when `release_person` drops a `Person`, Rust automatically
+//!   drops `Location` too (fields drop in declaration order). C++ destructors
+//!   work similarly, but the explicit `Drop` impl here lets us observe it.
+//! - **String encoding:** `to_string_lossy` is used when reading C strings
+//!   because C doesn't guarantee UTF-8. Rust `String` must be valid UTF-8, so
+//!   invalid bytes become the replacement character (`\u{FFFD}`) rather than
+//!   panicking or causing undefined behaviour.
+//!
 //! Note: all memory allocated by Rust must be freed by Rust. C++ must not
 //! call `free()` or `delete` on pointers returned by these functions.
 //!
@@ -87,6 +100,9 @@ pub unsafe extern "C" fn create_person(
     city: *const c_char,
     country: *const c_char,
 ) -> *mut Person {
+    // to_string_lossy: C strings are not guaranteed to be valid UTF-8.
+    // Rust Strings must be, so invalid bytes become the replacement character
+    // rather than causing a panic or undefined behaviour.
     let first = unsafe { CStr::from_ptr(first_name) }
         .to_string_lossy()
         .into_owned();
@@ -148,6 +164,9 @@ pub unsafe extern "C" fn release_person(ptr: *mut Person) {
     if ptr.is_null() {
         return;
     }
+    // Box::from_raw pairs with Box::into_raw from create_person.
+    // This ensures Rust's allocator frees the memory — calling C++'s
+    // free() or delete here would be undefined behaviour.
     unsafe {
         drop(Box::from_raw(ptr));
     }
@@ -268,5 +287,60 @@ mod tests {
         let null_info = unsafe { get_person_info(std::ptr::null()) };
         assert!(null_info.is_null());
         unsafe { release_get_person_info(std::ptr::null_mut()) };
+    }
+
+    #[test]
+    fn test_gender_variants() {
+        // Verify all three gender values map correctly and produce a valid pointer
+        let first = CString::new("Test").unwrap();
+        let last = CString::new("User").unwrap();
+        let city = CString::new("London").unwrap();
+        let country = CString::new("UK").unwrap();
+
+        for gender_code in [0u8, 1u8, 2u8] {
+            let ptr = unsafe {
+                create_person(
+                    first.as_ptr(),
+                    last.as_ptr(),
+                    gender_code,
+                    20,
+                    city.as_ptr(),
+                    country.as_ptr(),
+                )
+            };
+            assert!(!ptr.is_null(), "gender code {gender_code} returned null");
+            unsafe { release_person(ptr) };
+        }
+    }
+
+    #[test]
+    fn test_info_contains_location() {
+        // get_person_info output must include both city and country
+        let first = CString::new("Zara").unwrap();
+        let last = CString::new("Ahmed").unwrap();
+        let city = CString::new("Cairo").unwrap();
+        let country = CString::new("Egypt").unwrap();
+
+        let ptr = unsafe {
+            create_person(
+                first.as_ptr(),
+                last.as_ptr(),
+                0,
+                22,
+                city.as_ptr(),
+                country.as_ptr(),
+            )
+        };
+        assert!(!ptr.is_null());
+
+        let info_ptr = unsafe { get_person_info(ptr) };
+        assert!(!info_ptr.is_null());
+
+        let info = unsafe { CStr::from_ptr(info_ptr) }.to_string_lossy();
+        assert!(info.contains("Cairo"), "info missing city: {info}");
+        assert!(info.contains("Egypt"), "info missing country: {info}");
+
+        unsafe { release_get_person_info(info_ptr) };
+        unsafe { release_person(ptr) };
     }
 }
