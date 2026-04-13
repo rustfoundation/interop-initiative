@@ -1,0 +1,8 @@
+[package]
+name = "overloaded-greet"
+version = "0.1.0"
+edition = "2024"
+
+# Prevent supply-chain attacks using "=version" to pin versions
+[build-dependencies]
+cc = "=1.2.57"
