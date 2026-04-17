@@ -15,7 +15,7 @@ Other interop users would benefit from [a 1:1 mapping](https://github.com/google
 
 Rust's FFI integer and float types are based on the most popular C compiler (and compiler settings) on each architecture, which causes challenges for less popular compilers and non-standard settings.
 
-It also causes issues with [type promotion of variadic arguments](https://rust-lang.zulipchat.com/#narrow/channel/213817-t-lang/topic/Is.20varargs.20f32.20.60float.60.20or.20.60_Float32.60/near/585803988), inckuding floating point.
+It also causes issues with [type promotion of variadic arguments in C/C++](https://rust-lang.zulipchat.com/#narrow/channel/213817-t-lang/topic/Is.20varargs.20f32.20.60float.60.20or.20.60_Float32.60/near/585803988), inckuding floating point.
 
 In Rust, the set of conversions available with `Into` is a subset of lossless `as` casts.
 The `as` operator can also silently perform lossy casts in Rust, but there are `clippy` lints that:
@@ -148,7 +148,7 @@ Solutions should handle (or explain why handling these types isn't needed):
 
 - Rust's `std::ffi` uses `i8` for [`c_char`](https://doc.rust-lang.org/stable/std/ffi/type.c_char.html), but Crubit uses [`u8`](https://docs.rs/ffi_11/latest/ffi_11/struct.c_char.html)
 - Requiring C++ `uint8_t` to be `unsigned char` (?)
-- [Variadic argument promotion of floating point types](https://rust-lang.zulipchat.com/#narrow/channel/213817-t-lang/topic/Is.20varargs.20f32.20.60float.60.20or.20.60_Float32.60/near/585803988)
+- [Variadic argument promotion of C/C++ floating point types](https://rust-lang.zulipchat.com/#narrow/channel/213817-t-lang/topic/Is.20varargs.20f32.20.60float.60.20or.20.60_Float32.60/near/585803988)
 - TODO: add extra examples here
 
 On Windows:
