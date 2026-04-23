@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 
-cd "$(dirname "$0")"
+echo "Running Rust example..."
+cargo run
 
-make all
+echo "Running C++ example..."
+g++ main.cpp -o main
+./main
+
