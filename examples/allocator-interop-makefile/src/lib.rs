@@ -1,4 +1,3 @@
-
 use std::os::raw::c_uint;
 
 /// Allocates an array of `length` u32 values on the Rust heap,
