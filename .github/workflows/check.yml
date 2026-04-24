@@ -18,17 +18,14 @@ jobs:
   build-rust:
     name: 1. Build Rust examples
     runs-on: ubuntu-latest
-    # Actions are pinned to a commit to prevent supply-chain attacks
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Build Rust in each example
         run: |
-          # FIXME: handle spaces and special characters in example directory names (in all jobs)
           for EXAMPLE in $(find examples -name Cargo.toml | sort); do
             EXAMPLE=$(dirname "$EXAMPLE")
             echo "Building Rust in '$EXAMPLE'..."
-            # cd, but using a stack of directories that can be popped off
             pushd "$EXAMPLE"
             cargo build --all-targets --all-features
             popd
@@ -58,12 +55,18 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      - name: Install C toolchain
+        run: sudo apt-get install -y gcc make
+
+      - name: Mark run.sh scripts as executable
+        run: |
+          find examples -name run.sh -exec chmod +x {} \;
+
       - name: Run Rust and C++ in each example
         run: |
           for EXAMPLE in $(find examples -type d -mindepth 1 -maxdepth 1 | sort); do
             echo "Running '$EXAMPLE'..."
             pushd "$EXAMPLE"
-            # If there is a run.sh script, use it to build and run the example
             if [ -f run.sh ]; then
               echo "Using 'run.sh' script to build and run '$EXAMPLE'..."
               ./run.sh
@@ -128,8 +131,6 @@ jobs:
 
   all:
     name: All checks
-    # Always run this job, even if earlier steps were skipped (or failed):
-    # <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks#handling-skipped-but-required-checks>
     if: ${{ always() }}
     runs-on: ubuntu-latest
     needs:
@@ -141,7 +142,6 @@ jobs:
       - fmt-rust
     steps:
       - name: Fail if any other job failed
-        # Every job status needs to be checked here, because `always()` stops failures from propagating automatically
         run: |
           echo "Checking other jobs..."
           [[ "${{ needs.build-rust.result }}" == "success" ]] || exit 1
