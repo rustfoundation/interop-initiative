@@ -1,35 +1,29 @@
-use std::os::raw::c_uint;
+use std::ffi::{CStr, CString};
+use std::os::raw::c_char;
 
-/// Allocates an array of `length` u32 values on the Rust heap,
-/// fills them with sequential values, and returns a raw pointer.
+/// Receives a C string, processes it, and returns a Rust-allocated string.
 ///
 /// # Safety
-/// - The caller must free this pointer using `rust_free_array`.
-/// - Never pass this pointer to C's `free()` — undefined behaviour.
+/// - The caller must free the returned pointer using `free_string`.
+/// - Never pass the returned pointer to C's `free()` — undefined behaviour.
 #[no_mangle]
-pub extern "C" fn rust_alloc_array(length: c_uint) -> *mut c_uint {
-    let length = length as usize;
-    let mut vec: Vec<u32> = (0..length as u32).collect();
-    let ptr = vec.as_mut_ptr();
-    std::mem::forget(vec); // give ownership to the caller
-    ptr
+pub unsafe extern "C" fn process_string(input: *const c_char) -> *mut c_char {
+    let input = CStr::from_ptr(input).to_string_lossy();
+    println!("[Rust] received: \"{}\"", input);
+    let response = format!("Hello from Rust! You sent: {}", input);
+    CString::new(response).unwrap().into_raw()
 }
 
-/// Frees an array that was allocated by `rust_alloc_array`.
+/// Frees a string that was allocated by `process_string`.
 ///
 /// # Safety
-/// - `ptr` must have been returned by `rust_alloc_array`.
-/// - `length` must match the length passed to `rust_alloc_array`.
+/// - `ptr` must have been returned by `process_string`.
 /// - Must not be called more than once for the same pointer.
 #[no_mangle]
-pub unsafe extern "C" fn rust_free_array(ptr: *mut c_uint, length: c_uint) {
+pub unsafe extern "C" fn free_string(ptr: *mut c_char) {
     if ptr.is_null() {
         return;
     }
-
-    let length = length as usize;
-
-    // SAFETY: ptr was created by Vec::as_mut_ptr with this length
-    let _ = Vec::from_raw_parts(ptr, length, length);
-    // dropped here → memory freed correctly
+    // SAFETY: ptr was created by CString::into_raw
+    drop(CString::from_raw(ptr));
 }
