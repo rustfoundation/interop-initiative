@@ -22,17 +22,21 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Build Rust in each example
+      - name: Run Rust and C++ in each example
         run: |
-          # FIXME: handle spaces and special characters in example directory names (in all jobs)
-          for EXAMPLE in $(find examples -name Cargo.toml | sort); do
-            EXAMPLE=$(dirname "$EXAMPLE")
-            echo "Building Rust in '$EXAMPLE'..."
-            # cd, but using a stack of directories that can be popped off
+          for EXAMPLE in $(find examples -type d -mindepth 1 -maxdepth 1 | sort); do
+            echo "Running '$EXAMPLE'..."
             pushd "$EXAMPLE"
-            cargo build --all-targets --all-features
+            if [ -f run.sh ]; then
+              echo "Using 'run.sh' script to build and run '$EXAMPLE'..."
+              chmod +x run.sh
+              bash run.sh
+            else
+              echo "No 'run.sh' script found, using cargo run for '$EXAMPLE'..."
+              cargo run
+            fi
             popd
-            echo "'$EXAMPLE' Rust build succeeded"
+            echo "Running '$EXAMPLE' succeeded"
           done
 
   test-rust:
@@ -58,6 +62,9 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      - name: Install C toolchain
+        run: sudo apt-get install -y gcc make
+
       - name: Run Rust and C++ in each example
         run: |
           for EXAMPLE in $(find examples -type d -mindepth 1 -maxdepth 1 | sort); do
@@ -66,7 +73,8 @@ jobs:
             # If there is a run.sh script, use it to build and run the example
             if [ -f run.sh ]; then
               echo "Using 'run.sh' script to build and run '$EXAMPLE'..."
-              ./run.sh
+              chmod +x run.sh
+              bash run.sh
             else
               echo "No 'run.sh' script found, using cargo run for '$EXAMPLE'..."
               cargo run
