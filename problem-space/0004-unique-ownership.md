@@ -129,8 +129,9 @@ TODO
 ## Prior art
 [prior-art]: #prior-art
 
-Ecosystem Crates:
+Ecosystem:
 - [moveit](https://docs.rs/moveit/latest/moveit/)
+- [Crubit's `Unpin` analysis](https://crubit.rs/design/unpin.html)
 
 Rust Language/Library features:
 

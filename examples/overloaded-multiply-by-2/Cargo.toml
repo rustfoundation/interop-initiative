@@ -1,0 +1,14 @@
+[package]
+name = "overloaded-multiply-by-2"
+version = "0.1.0"
+edition = "2024"
+# Run build.rs so Cargo compiles and links the C++ source.
+build = "build.rs"
+
+[dependencies]
+# Use the `cpp` crate to embed C++ in Rust source.
+cpp = "=0.5.10"
+
+[build-dependencies]
+# Use `cpp_build` in build.rs for C++ extraction and compilation.
+cpp_build = "=0.5.10"

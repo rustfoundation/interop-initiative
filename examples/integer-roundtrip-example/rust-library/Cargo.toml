@@ -1,0 +1,11 @@
+[package]
+name = "rust-library"
+version = "0.1.0"
+edition = "2024"
+
+# Build a static C/C++ library
+[lib]
+crate-type = ["staticlib"]
+
+# Add Rust dependencies here
+[dependencies]
