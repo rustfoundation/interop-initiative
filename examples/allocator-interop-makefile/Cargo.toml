@@ -1,0 +1,9 @@
+[package]
+name = "allocator-interop-example"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "allocator_interop_example"
+crate-type = ["staticlib"]
+path = "src/lib.rs"
