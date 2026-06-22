@@ -71,7 +71,17 @@ TODO
 ## Further Background
 [further-background]: #further-background
 
-TODO
+Modern debuggers rely on debug information formats such as DWARF (on Unix-like systems) and PDB (on Windows) to map compiled binaries back to source-level constructs.
+
+Rust currently emits debug information that is largely compatible with existing tooling designed for C and C++. However, Rust’s language features—such as enums with rich semantics, pattern matching, and async/await transformations—do not always map cleanly onto these formats.
+
+As a result, debuggers often fall back to displaying low-level representations of Rust types, exposing implementation details (e.g., discriminants and internal fields) rather than high-level abstractions.
+
+In mixed-language projects, these issues are amplified. C++ and Rust use different abstractions and conventions, and there is no unified model for representing types and execution flow across both languages in debugging tools.
+
+Additionally, Rust’s async model introduces compiler-generated state machines, which can obscure control flow and make stack traces harder to interpret during debugging.
+
+TODO: fill in the remainder of this section
 
 ## Experts & Champions
 [experts--champions]: #experts--champions
