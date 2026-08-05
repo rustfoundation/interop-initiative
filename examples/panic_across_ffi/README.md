@@ -59,3 +59,4 @@ Rust: about to panic (UNSAFE)...
 
 ```bash
 ./run.sh
+```
