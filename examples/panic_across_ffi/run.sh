@@ -14,4 +14,7 @@ g++ cpp/main.cpp \
 echo "=== Running example ==="
 
 # Run the program, but DO NOT fail CI if it aborts
-./example || true
+if ./example; then
+    echo "Panic over FFI should abort, but it didn't"
+    exit 1
+fi
