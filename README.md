@@ -8,7 +8,7 @@ In collaboration with the Rust Foundation, Rust Project, and appropriate externa
 
 Both C++ and Rust will play important roles in systems programming[^1] for the foreseeable future. With such a high degree of overlap in applicability, using both languages together is essential to pursuing safety and performance which is maintainable and scalable. Empowering technologists to choose the language best suited to their situation and minimizing the costs and risks of interoperation is the core goal of the initiative.
 
-Despite C interoperability being a focus of Rust since its inception, various factors have inhibited a mature, standard and automatic solution for developing software using C++ and Rust together. To overcome these obstacles, the initiative will pursue a top-down, problem-space[^2] approach to facilitate cooperation and consensus among stakeholders including the Rust Project, the Rust Foundation member organizations, and the community of individuals and organizations using C++ or Rust. Together, [the material resources contributed to the initiative](https://foundation.rust-lang.org/news/google-contributes-1m-to-rust-foundation-to-support-c-rust-interop-initiative/) will be used to pursue three concurrent strategies:
+Despite C interoperability being a focus of Rust since its inception, various factors have inhibited a mature, standard and automatic solution for developing software using C++ and Rust together. To overcome these obstacles, the initiative will pursue a top-down, problem-space[^2] approach to facilitate cooperation and consensus among stakeholders including the Rust Project, the Rust Foundation member organizations, and the community of individuals and organizations using C++ or Rust. Together, [the material resources contributed to the initiative](https://rustfoundation.org/media/google-contributes-1m-to-rust-foundation-to-support-c-rust-interop-initiative/) will be used to pursue three concurrent strategies:
 
 1. Improve existing tools and address tactical issues within the Rust Project to reduce interoperability friction and risk in the short term
 2. Build consensus around long-term goals requiring changes to Rust itself and develop the tactical approaches to begin pursuing them
@@ -24,7 +24,7 @@ The problem-oriented approach is essential to overcoming the obstacles in this s
 
 C++/Rust interoperability is the ability to exchange data and execute code written in both languages. There is an inherent trade-off between simplicity and efficiency and a distinct dichotomy between *inter*-process communication[^4] and *intra*-process interoperability. The latter occurs within the same executable, either through integrated compilation of multiple languages (inline embedding)[^5] or foreign function interfaces (FFI). The interop initiative is exclusively focused on the latter form, so all further mentions of interoperability in this document refer to *intra*-process interoperability. There are many open questions not covered here, such as which Rust and C++ language features can be effectively supported across FFI and how static vs dynamic linking affects interoperability.
 
-[^4]: For example: files, sockets and shared memory. See https://en.wikipedia.org/wiki/Inter-process_communication
+[^4]: For example: files, sockets and shared memory. See [Wikipedia: Inter-process communication](https://en.wikipedia.org/wiki/Inter-process_communication)
 [^5]: This can also include cross-language, link-time optimization (x-lang LTO), which is a potential optimization for interop, but likely depends on the same IR being used to compile both languages.
 
 ### Who is impacted?
@@ -51,7 +51,7 @@ As the desire to integrate Rust into more C++ codebases increases, the value of 
 
 ### What is the impact?
 
-As a systems language, Rust was always intended to have interoperability with C. Even for non-systems languages, C is the _lingua franca_ for FFI generally and accessing OS-level resources in particular. As such, C ↔︎ Rust interoperability is *relatively* straightforward and the burden on the Rust programmer comes in two major forms:
+As a systems language, Rust was always intended to have interoperability with C. Even for non-systems languages, C is the *lingua franca* for FFI generally and accessing OS-level resources in particular. As such, C ↔︎ Rust interoperability is *relatively* straightforward and the burden on the Rust programmer comes in two major forms:
 
 1. Communication is limited to interfaces expressible in the C type system, precluding much of Rust’s ergonomic and safety benefits.
 2. The FFI boundary itself is typically unsafe[^7], meaning guarantees such as freedom from undefined behavior and data races are lost.
@@ -71,7 +71,7 @@ Why is the situation not already better? C++ was already quite mature by the tim
 
 [^9]: In other words, an ABI. Alternatively, a compiler which understands both languages can translate both to an intermediate representation which then must be correctly combined, but that solution becomes tied to the specific tooling (or theoretically, a standardized IR) rather than being general purpose interoperability between the languages.
 [^10]: For example, a C-based pointer has no concept of a valid range, so even though Rust slices and C++ spans are compatible concepts, additional data and correct mapping is necessary to translate between them via a C ABI FFI.
-[^11]: According to https://en.wikipedia.org/wiki/System_programming_language#Major_languages
+[^11]: According to [Wikipedia](https://en.wikipedia.org/wiki/System_programming_language#Major_languages)
 [^12]: “Significant” is subjective, but only Go, Rust, and Swift currently make it into the [TIOBE top 20](https://www.tiobe.com/tiobe-index/).
 [^13]: The development of async Rust is a notable example.
 [^14]: See Mara Bos’s “[Making Connections](https://www.youtube.com/watch?v=aENHzYAFkeE)” talk and Niko Matsakis’s [Project Goals](https://github.com/rust-lang/rfcs/blob/master/text/3614-project-goals.md).
@@ -102,6 +102,7 @@ All use of technology implies trade-offs and the adoption of any new technology 
 Per the vision stated at the outset, the goal is to make interoperability “accessible and approachable”, but what that looks like differs a great deal depending on the audience. One way to conceptualize the pinnacle of accessibility is to consider the ideal of frictionless interoperability: whether from Rust or C++, *using* code in the other language is no more difficult than if it were implemented in the same language. The fact that each language has fundamentally different abstractions means this isn’t an achievable goal any more than perfect translation between natural languages, but it is still a useful ideal because it can provide a heading along which to proceed and thereby identify goals along the way as well as intervening obstacles.
 
 Some ideals of frictionless interoperability worth pursuing include:
+
 - Minimum toil: the amount of additional user-written code required is no more than the native language
 - No added complexity: the details of the interface itself aren’t relevant to code on either side of it
 - Maximum safety: interoperating should require the minimal amount of unsafe code
@@ -109,11 +110,13 @@ Some ideals of frictionless interoperability worth pursuing include:
 - Maximum performance: interoperating should aspire to the [zero overhead principle](https://isocpp.org/wiki/faq/big-picture#zero-overhead-principle)
 
 At this stage, it’s premature to distill these qualities into tactically actionable goals, but viewed as a grand strategy, frictionless interoperation can be pursued through three, parallel strategies:
+
 1. Short-term: improve the existing tools, resolve issues which have been stalled due to lack of ownership, concerted effort or hesitancy to stabilize an implementation
 2. Long-term: build the foundations for a richer form of interoperability at the language, compiler, and standard library levels
 3. Social interoperability: engage with the C++ community including its users and standards processes to build the bridge from both sides and simultaneously improve both languages
 
 Relevant to all strategies, the initiative will embody several design axioms:
+
 - Build the foundations for a better future while actively improving the present
 - Pursue high-quality interoperation from both sides
 - Pursue general-purpose interoperability (not tied to a specific toolchain/IR)
@@ -142,7 +145,7 @@ In order to make dramatic improvements in interoperability, incremental improvem
 
 - Establishing relationships and gathering input and support from key stakeholders in the Project and other relevant experts
 - Determine a viable structure to discuss and make high-level decisions about what foundational pieces are required for building a richer interoperability experience and which avenues will not be pursued
-- Once actionable foundational pieces are determined, pursue the support of individual teams (perhaps via [Project Goals](https://rust-lang.github.io/rust-project-goals/)) and allocate resources via Foundation Grants
+- Once actionable foundational pieces are determined, pursue the support of individual teams (perhaps via [Project Goals](https://rust-lang.github.io/goals/)) and allocate resources via Foundation Grants
 
 The first piece is well underway and will be ongoing. The second piece requires a top-down, problem-space approach which is somewhat unconventional for the Rust Project and community, but there seems to be support for improving this capability. This represents one of the core challenges and potential benefits of the initiative. The third piece depends somewhat on the success of the first iteration of the Project Goals, but so far appears to be a good fit for supporting new, significant work between the Project and Foundation.
 
@@ -158,6 +161,6 @@ Of the three strategies, this is perhaps the most ambitious and least certain. I
 
 ### Next Steps
 
-This problem statement and associated strategies are the first step towards engaging the broader Rust and C++ communities. There is still much to be decided and new ideas and constructive input will be incredibly valuable. If you’d like to provide feedback or suggestions, you can follow discussions at the [t-lang/interop](https://rust-lang.zulipchat.com/#narrow/stream/427678-t-lang.2Finterop) Zulip channel[^20] or email interop@rustfoundation.org. Future updates will be announced in both places as well as the [Rust Foundation blog](https://foundation.rust-lang.org/news/). The initiative will also provide updates to the Rust Foundation board on this work, which includes members of the Rust Project.
+This problem statement and associated strategies are the first step towards engaging the broader Rust and C++ communities. There is still much to be decided and new ideas and constructive input will be incredibly valuable. If you’d like to provide feedback or suggestions, you can follow discussions at the [t-lang/interop](https://rust-lang.zulipchat.com/#narrow/stream/427678-t-lang.2Finterop) Zulip channel[^20] or email [interop@rustfoundation.org](mailto:interop@rustfoundation.org). Future updates will be announced in both places as well as the [Rust Foundation blog](https://rustfoundation.org/media/). The initiative will also provide updates to the Rust Foundation board on this work, which includes members of the Rust Project.
 
 [^20]:  As this is part of the rust-lang Zulip instance, the majority of the presence will be people with an interest in the Rust Project, but people with a focus on C++ who are interested in improving C++/Rust interoperability are very welcome!
