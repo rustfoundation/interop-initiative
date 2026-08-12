@@ -5,13 +5,13 @@
 This table describes how various Rust/C++ interop use cases and problems are supported by major
 interop tooling, including the Rust compiler.
 
-Key:
-⛔ No Support
-🔁 In progress
-◓ Basic Support
-✅ Good Support
-? Needs Analysis
-*blank* Out of Scope
+*Key:*<br/>
+⛔ No Support<br/>
+🔁 In progress<br/>
+◓ Basic Support<br/>
+✅ Good Support<br/>
+? Needs Analysis<br/>
+*blank* Out of Scope<br/>
 
 | Use Case or Problem Statement                          | rustc    | Crubit   | cxx   | Zngur |
 | :----------------------------------------------------- | :------- | :------- | :---- | :---- |
@@ -21,24 +21,24 @@ Key:
 | [Define a C++ enum from Rust][c-enum-from-rust]        | ◓        | ✅       | ✅    | ⛔    |
 | [Match standard library type layouts][stdlib-layout]   | ◓        | ✅       | ✅    | ⛔    |
 | [Link Time Optimisation (LTO) Interop][lto-interop]    | ◓        | ✅       | ✅    | ⛔    |
-| [Init C++ objects in-place in Rust][rust-inplace-init] | [🔁][^1] | ✅       | ⛔    | ⛔    |
+| [Init C++ objects in-place in Rust][rust-inplace-init] | 🔁[^1]   | ✅       | ⛔    | ⛔    |
 | [Skip non-null pointer null checks][skip-null-checks]  | ?        | ✅       | ⛔    | ⛔    |
 | [Lifetimes in C++ code][cpp-lifetimes]                 |          | ✅       | ✅    | ⛔    |
 | [Unify C++ forward decls to Rust types][cpp-fwd-decls] |          | ✅       | ✅    | ⛔    |
-| [Type-dependent C++ call safety][cpp-type-dep-safe]    | [🔁][^2] | ?        | ⛔    | ⛔    |
+| [Type-dependent C++ call safety][cpp-type-dep-safe]    | 🔁[^2]   | ?        | ⛔    | ⛔    |
 | [C++ templates with Rust types][cpp-templ-rust]        |          | ✅       | ⛔    | ⛔    |
-| [Call an overloaded C++ function from Rust][overload]  | [🔁][^3] | ◓        | ◓     | ?     |
-| [Use a prefix of the full Rust/C++ type][type-prefix]  | [🔁][^4] | ✅       |       |       |
+| [Call an overloaded C++ function from Rust][overload]  | 🔁[^3]   | ◓        | ◓     | ?     |
+| [Use a prefix of the full Rust/C++ type][type-prefix]  | 🔁[^4]   | ✅       |       |       |
 | [Cross-language class inheritance][cross-inherit]      |          | ?        | ⛔    | ?     |
 | [Create a vector containing FFI types][cross-vec]      |          | ✅       | ⛔    | ✅    |
 | [Use FFI string types][string-ffi]                     |          | ✅       | ✅    | ?     |
-| [Lossless FFI integer type mappings][ffi-int-1to1]     | ◓        | [✅][^5] |       |       |
+| [Lossless FFI integer type mappings][ffi-int-1to1]     | ◓        | ✅[^5]   |       |       |
 | [FFI thread safety][ffi-thread-safe]                   | ◓        | ?        | ?     | ?     |
 | [Rust & C++ unwinding compatibility][ffi-unwind]       | ◓        | ⛔       | ✅    | ✅    |
-| [Allocator FFI compatibility][ffi-alloc]               | [🔁][^6] | ✅       | ✅    | ⛔    |
+| [Allocator FFI compatibility][ffi-alloc]               | 🔁[^6]   | ✅       | ✅    | ⛔    |
 | *Broad Support*                                        | rustc    | Crubit   | cxx   | Zngur |
 | [Cross-language object ownership][cross-own]           |          | ✅       | ✅    | ✅    |
-| [Add Rust to existing C/C++ builds][rust-to-cpp-build] | [◓][^7]  | ✅       | ✅    | ✅    |
+| [Add Rust to existing C/C++ builds][rust-to-cpp-build] | ◓[^7]    | ✅       | ✅    | ✅    |
 | [Convert Rust & C++ Result types][cross-result-types]  |          | ✅       | ✅    | ✅    |
 | [Call C++ Iterators from Rust][cross-iter]             |          | ✅       | ✅    | ✅    |
 | [Compatible type layouts][type-layouts]                | ◓        | ✅       | ✅    | ✅    |
