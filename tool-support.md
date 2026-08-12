@@ -28,14 +28,15 @@ interop tooling, including the Rust compiler.
 | [Type-dependent C++ call safety][cpp-type-dep-safe]    | 🔁[^2]   | ?        | ⛔    | ⛔    |
 | [C++ templates with Rust types][cpp-templ-rust]        |          | ✅       | ⛔    | ⛔    |
 | [Call an overloaded C++ function from Rust][overload]  | 🔁[^3]   | ◓        | ◓     | ?     |
-| [Use a prefix of the full Rust/C++ type][type-prefix]  | 🔁[^4]   | ✅       |       |       |
-| [Cross-language class inheritance][cross-inherit]      |          | ?        | ⛔    | ?     |
+| [Use a prefix of the full Rust/C++ type][type-prefix]  | 🔁[^4]   | ✅       | ✅    |       |
+| [Cross-language class inheritance][cross-inherit]      |          | ◓       | ⛔    | ✅    |
 | [Create a vector containing FFI types][cross-vec]      |          | ✅       | ⛔    | ✅    |
 | [Use FFI string types][string-ffi]                     |          | ✅       | ✅    | ?     |
 | [Lossless FFI integer type mappings][ffi-int-1to1]     | ◓        | ✅[^5]   |       |       |
 | [FFI thread safety][ffi-thread-safe]                   | ◓        | ?        | ?     | ?     |
 | [Rust & C++ unwinding compatibility][ffi-unwind]       | ◓        | ⛔       | ✅    | ✅    |
 | [Allocator FFI compatibility][ffi-alloc]               | 🔁[^6]   | ✅       | ✅    | ⛔    |
+| [Passing non-POD types][non-pod-passing]               | ◓        | ✅       | ✅    | ?     |
 | *Broad Support*                                        | rustc    | Crubit   | cxx   | Zngur |
 | [Cross-language object ownership][cross-own]           |          | ✅       | ✅    | ✅    |
 | [Add Rust to existing C/C++ builds][rust-to-cpp-build] | ◓[^7]    | ✅       | ✅    | ✅    |
@@ -69,11 +70,12 @@ interop tooling, including the Rust compiler.
 [cross-result-types]: https://github.com/rustfoundation/interop-initiative/issues/49
 [cross-iter]: https://github.com/rustfoundation/interop-initiative/issues/21
 [type-layouts]: https://github.com/rustfoundation/interop-initiative/issues/63
+[non-pod-passing]: https://github.com/rustfoundation/interop-initiative/issues/77
 
 [^1]: [Rust project goal](https://rust-lang.github.io/rust-project-goals/2026/in-place-init.html)
 [^2]: [Rust RFC](https://github.com/rust-lang/rfcs/pull/2375)
 [^3]: [Rust compiler experiment](https://github.com/rust-lang/rust/issues/153629)
-[^4]: [Rust compiler experiment](https://github.com/rust-lang/rust/issues/130494)
+[^4]: [Rust compiler experiment](https://github.com/rust-lang/rust/issues/130494), requires a Rust `UnsafeCell` to wrap C++ mutable class members
 [^5]: [`ffi_11` crate](https://crates.io/crates/ffi_11)
 [^6]: [Rust Zulip discussions](https://rust-lang.zulipchat.com/#narrow/channel/197181-t-libs.2Fwg-allocators/topic/Near-term.20path.20to.20stabilizing.20an.20MVP.20of.20.60trait.20Allocator.60.3F/with/441587971)
 [^7]: [Rust stabilisation RFC](https://github.com/rust-lang/rfcs/pull/3993)
