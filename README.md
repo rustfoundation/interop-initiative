@@ -1,4 +1,21 @@
-# C++/Rust Interoperability Problem Statement
+# C++/Rust Interoperability Problem Space Mapping
+
+## Quick Index
+
+- [Use Cases][use-case-tickets]
+- Problem Statements:
+  - [tickets][prob-tickets]
+  - [template][prob-templ]
+  - [detailed statements][prob-statements]
+- [Tool Support][tool-support]
+- [Code Examples][code-examples]
+
+[use-case-tickets]: https://github.com/rustfoundation/interop-initiative/issues?q=is%3Aissue%20label%3At-use-case
+[prob-tickets]: https://github.com/rustfoundation/interop-initiative/issues?q=is%3Aissue%20label%3At-problem-statement
+[prob-templ]: https://github.com/rustfoundation/interop-initiative/blob/main/problem-space/0000-template.md
+[prob-statements]: https://github.com/rustfoundation/interop-initiative/tree/main/problem-space
+[tool-support]: https://github.com/rustfoundation/interop-initiative/blob/main/tool-support.md
+[code-examples]: https://github.com/rustfoundation/interop-initiative/tree/main/examples
 
 ## The Initiative Vision
 
