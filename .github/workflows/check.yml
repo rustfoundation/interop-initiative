@@ -126,6 +126,27 @@ jobs:
             echo "'$EXAMPLE' Rust fmt checks succeeded"
           done
 
+  # Some external links go to README.md and others to problem-statement.md.
+  # We can't symlink because GitHub displays it poorly, so we check they're identical in CI
+  # instead.
+  readme-sync:
+    name: 7. Sync problem-statement with README
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Check README.md and problem-statement.md are identical
+        run: |
+          git diff --no-index problem-statement.md README.md
+          if [ $? -ne 0 ]; then
+            echo "problem-statement.md must be kept in sync with README.md"
+            exit 1
+          fi
+          if [[ -L problem-statement.md ]]; then
+            echo "problem-statement.md must not be a symlink"
+            exit 1
+          fi
+
   all:
     name: All checks
     # Always run this job, even if earlier steps were skipped (or failed):
@@ -139,6 +160,7 @@ jobs:
       - clippy-rust
       - doc-rust
       - fmt-rust
+      - readme-sync
     steps:
       - name: Fail if any other job failed
         # Every job status needs to be checked here, because `always()` stops failures from propagating automatically
@@ -150,3 +172,4 @@ jobs:
           [[ "${{ needs.clippy-rust.result }}" == "success" ]] || exit 1
           [[ "${{ needs.doc-rust.result }}" == "success" ]] || exit 1
           [[ "${{ needs.fmt-rust.result }}" == "success" ]] || exit 1
+          [[ "${{ needs.readme-sync.result }}" == "success" ]] || exit 1
