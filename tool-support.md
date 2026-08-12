@@ -15,7 +15,6 @@ interop tooling, including the Rust compiler.
 
 | Use Case or Problem Statement                          | rustc    | Crubit   | cxx   | Zngur |
 | :----------------------------------------------------- | :------- | :------- | :---- | :---- |
-| [Rust Traits for C++ Types][traits-cpp-types]          | ◓        | ✅       | ✅    | ✅    |
 | [Rust dyn traits from C++][dyn-traits-cpp]             | ?        | ?        | ⛔    | ✅    |
 | [Async C++/Rust Interop][async-interop]                | ⛔       | ⛔       | ⛔    | ⛔    |
 | [Define a C++ enum from Rust][c-enum-from-rust]        | ◓        | ✅       | ✅    | ⛔    |
@@ -38,6 +37,7 @@ interop tooling, including the Rust compiler.
 | [Allocator FFI compatibility][ffi-alloc]               | 🔁[^6]   | ✅       | ✅    | ⛔    |
 | [Passing non-POD types][non-pod-passing]               | ◓        | ✅       | ✅    | ?     |
 | *Broad Support*                                        | rustc    | Crubit   | cxx   | Zngur |
+| [Rust Traits for C++ Types][traits-cpp-types]          | ◓        | ✅       | ✅    | ✅    |
 | [Cross-language object ownership][cross-own]           |          | ✅       | ✅    | ✅    |
 | [Add Rust to existing C/C++ builds][rust-to-cpp-build] | ◓[^7]    | ✅       | ✅    | ✅    |
 | [Convert Rust & C++ Result types][cross-result-types]  |          | ✅       | ✅    | ✅    |
