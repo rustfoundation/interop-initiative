@@ -8,15 +8,15 @@ interop tooling, including the Rust compiler.
 *Key:*<br/>
 ⛔ No Support<br/>
 🔁 In progress<br/>
-◓ Basic Support<br/>
+◓ Basic or Partial Support<br/>
 ✅ Good Support<br/>
 ? Needs Analysis<br/>
 *blank* Out of Scope<br/>
 
 | Use Case or Problem Statement                          | rustc    | Crubit   | cxx   | Zngur |
 | :----------------------------------------------------- | :------- | :------- | :---- | :---- |
-| [Rust dyn traits from C++][dyn-traits-cpp]             | ?        | ?        | ⛔    | ✅    |
-| [Async C++/Rust Interop][async-interop]                | ⛔       | ⛔       | ⛔    | ⛔    |
+| [Rust dyn traits from C++][dyn-traits-cpp]             | ?        | ◓        | ⛔    | ✅    |
+| [Async C++/Rust Interop][async-interop]                | ⛔       | ✅       | ⛔    | ⛔    |
 | [Define a C++ enum from Rust][c-enum-from-rust]        | ◓        | ✅       | ✅    | ⛔    |
 | [Match standard library type layouts][stdlib-layout]   | ◓        | ✅       | ✅    | ⛔    |
 | [Link Time Optimisation (LTO) Interop][lto-interop]    | ◓        | ✅       | ✅    | ⛔    |
@@ -32,7 +32,7 @@ interop tooling, including the Rust compiler.
 | [Create a vector containing FFI types][cross-vec]      |          | ✅       | ⛔    | ✅    |
 | [Use FFI string types][string-ffi]                     |          | ✅       | ✅    | ?     |
 | [Lossless FFI integer type mappings][ffi-int-1to1]     | ◓        | ✅[^5]   |       |       |
-| [FFI thread safety][ffi-thread-safe]                   | ◓        | ?        | ?     | ?     |
+| [FFI thread safety][ffi-thread-safe]                   | ◓        | ◓        | ?     | ?     |
 | [Rust & C++ unwinding compatibility][ffi-unwind]       | ◓        | ⛔       | ✅    | ✅    |
 | [Allocator FFI compatibility][ffi-alloc]               | 🔁[^6]   | ✅       | ✅    | ⛔    |
 | [Passing non-POD types][non-pod-passing]               | ◓        | ✅       | ✅    | ?     |
