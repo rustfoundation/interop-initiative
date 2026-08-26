@@ -19,9 +19,9 @@ interop tooling, including the Rust compiler.
 | [Async C++/Rust Interop][async-interop]                | ⛔       | ✅       | ⛔    | ⛔    |
 | [Define a C++ enum from Rust][c-enum-from-rust]        | ◓        | ✅       | ✅    | ⛔    |
 | [Match standard library type layouts][stdlib-layout]   | ◓        | ✅       | ✅    | ⛔    |
-| [Link Time Optimisation (LTO) Interop][lto-interop]    | ◓        | ✅       | ✅    | ⛔    |
+| [Link Time Optimisation (LTO) Interop][lto-interop]    | ◓        | ✅       | ✅    | ?    |
 | [Init C++ objects in-place in Rust][rust-inplace-init] | 🔁[^1]   | ✅       | ⛔    | ⛔    |
-| [Skip non-null pointer null checks][skip-null-checks]  | ?        | ✅       | ⛔    | ⛔    |
+| [Skip non-null pointer null checks][skip-null-checks]  | ?        | ✅       | ⛔    | ◓    |
 | [Lifetimes in C++ code][cpp-lifetimes]                 |          | ✅       | ✅    | ⛔    |
 | [Unify C++ forward decls to Rust types][cpp-fwd-decls] |          | ✅       | ✅    | ⛔    |
 | [Type-dependent C++ call safety][cpp-type-dep-safe]    | 🔁[^2]   | ?        | ⛔    | ⛔    |
@@ -34,9 +34,9 @@ interop tooling, including the Rust compiler.
 | [Lossless FFI integer type mappings][ffi-int-1to1]     | ◓        | ✅[^5]   |       |       |
 | [FFI thread safety][ffi-thread-safe]                   | ◓        | ◓        | ?     | ?     |
 | [Rust & C++ unwinding compatibility][ffi-unwind]       | ◓        | ⛔       | ✅    | ✅    |
-| [Allocator FFI compatibility][ffi-alloc]               | 🔁[^6]   | ✅       | ✅    | ⛔    |
 | [Passing non-POD types][non-pod-passing]               | ◓        | ✅       | ✅    | ?     |
 | *Broad Support*                                        | rustc    | Crubit   | cxx   | Zngur |
+| [Allocator FFI compatibility][ffi-alloc]               | 🔁[^6]   | ✅       | ✅    | ✅    |
 | [Rust Traits for C++ Types][traits-cpp-types]          | ◓        | ✅       | ✅    | ✅    |
 | [Cross-language object ownership][cross-own]           |          | ✅       | ✅    | ✅    |
 | [Add Rust to existing C/C++ builds][rust-to-cpp-build] | ◓[^7]    | ✅       | ✅    | ✅    |
