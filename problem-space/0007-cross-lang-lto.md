@@ -95,7 +95,7 @@ TODO: fill in the remainder of this section
 [impact]: #impact
 
 One large project uses cross-language LTO with the same version of LLVM in `rustc` and `clang`.
-has only caused one crash across millions of lines of code, and years of widespread operation.
+This has only caused one crash across millions of lines of code, and years of widespread operation.
 This was due to a `cxx` bug which did not mark a C++ type as having interior mutability in Rust.
 
 TODO: fill in the remainder of this section
