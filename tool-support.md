@@ -1,6 +1,6 @@
 # Rust/C++ Interop Tool Support
 
-***This document is an initial, un-reviewed draft***
+***This document is an initial, partially reviewed draft***
 
 This table describes how various Rust/C++ interop use cases and problems are supported by major
 interop tooling, including the Rust compiler.
@@ -13,7 +13,7 @@ interop tooling, including the Rust compiler.
 ? Needs Analysis<br/>
 *blank* Out of Scope<br/>
 
-| Use Case or Problem Statement                          | rustc    | Crubit   | cxx   | Zngur |
+| Use Case or Problem Statement                          | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | :----------------------------------------------------- | :------- | :------- | :---- | :---- |
 | [Rust dyn traits from C++][dyn-traits-cpp]             | ?        | ◓        | ⛔    | ✅    |
 | [Async C++/Rust Interop][async-interop]                | ⛔       | ✅       | ⛔    | ⛔    |
@@ -38,11 +38,16 @@ interop tooling, including the Rust compiler.
 | [Rust Traits for C++ Types][traits-cpp-types]          | ◓        | ✅       | ◓?    | ✅    |
 | [Cross-language object ownership][cross-own]           |          | ✅       | ◓    | ✅    |
 | [Add Rust to existing C/C++ builds][rust-to-cpp-build] | ◓[^7]    | ◓       | ✅    | ✅    |
-| *Broad Support*                                        | rustc    | Crubit   | cxx   | Zngur |
+| *Broad Support*                                        | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | [Allocator FFI compatibility][ffi-alloc]               | 🔁[^6]   | ✅       | ✅    | ✅    |
 | [Convert Rust & C++ Result types][cross-result-types]  |          | ✅       | ✅    | ✅    |
 | [Call C++ Iterators from Rust][cross-iter]             |          | ✅       | ✅    | ✅    |
 | [Compatible type layouts][type-layouts]                | ◓        | ✅       | ✅    | ✅    |
+
+[rustc]: https://rust-lang.org
+[crubit]: https://crubit.rs
+[cxx]: https://cxx.rs
+[zngur]: https://hkalbasi.github.io/zngur/
 
 [traits-cpp-types]: https://github.com/rustfoundation/interop-initiative/issues/70
 [dyn-traits-cpp]: https://github.com/rustfoundation/interop-initiative/issues/69
