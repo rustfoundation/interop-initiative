@@ -44,20 +44,20 @@ interop tooling, including the Rust compiler:
 | [Rust Traits for C++ Types][traits-cpp-types]          | ◓        | ✅       | ◓?    | ✅    |
 | [Rust dyn traits from C++][dyn-traits-cpp]             | ?        | ◓        | ⛔    | ✅    |
 | [Cross-language class inheritance][cross-inherit]      |          | ◓        | ⛔    | ✅    |
-| [C++ templates with Rust types][cpp-templ-rust]        |          | ✅       | ⛔    |       |
+| [C++ templates with Rust types][cpp-templ-rust]        |          | ✅       | ⛔    | ⛔    |
 | *Safety*                                               | [rustc]  | [Crubit] | [cxx] | [Zngur] |
-| [Cross-language object ownership][cross-own]           |          | ✅       | ◓    | ✅    |
+| [Cross-language object ownership][cross-own]           |          | ✅       | ◓     | ✅    |
 | [Lifetimes in C++ code][cpp-lifetimes]                 |          | ◓        | ◓     |       |
 | [FFI thread safety][ffi-thread-safe]                   | ◓        | ◓        | ?     | ?     |
 | [Rust & C++ unwinding compatibility][ffi-unwind]       | ◓        | ⛔       | ✅    | ✅    |
-| [Skip non-null pointer null checks][skip-null-checks]  | ?        | ✅       | ⛔    | ◓    |
+| [Skip non-null pointer null checks][skip-null-checks]  | ?        | ✅       | ⛔    | ◓     |
 | [Allocator FFI compatibility][ffi-alloc]               | 🔁[^6]   | ✅       | ✅    | ✅    |
 | *Overloading*                                          | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | [Call an overloaded C++ function from Rust][overload]  | 🔁[^3]   | ◓        | ◓     | ?     |
 | [Type-dependent C++ call safety][cpp-type-dep-safe]    | 🔁[^2]   | ?        | ⛔    |       |
 | *Building & Linking*                                   | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | [Add Rust to existing C/C++ builds][rust-to-cpp-build] | ◓[^7]    | ◓        | ✅    | ✅    |
-| [Link Time Optimisation (LTO) Interop][lto-interop]    | ◓        | ✅       | ✅    | ?    |
+| [Link Time Optimisation (LTO) Interop][lto-interop]    | ◓        | ✅       | ✅    | ?     |
 
 [traits-cpp-types]: https://github.com/rustfoundation/interop-initiative/issues/70
 [dyn-traits-cpp]: https://github.com/rustfoundation/interop-initiative/issues/69
