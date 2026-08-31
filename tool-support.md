@@ -26,7 +26,7 @@ interop tooling, including the Rust compiler:
 
 | Use Case or Problem Statement                          | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | :----------------------------------------------------- | :------- | :------- | :---- | :---- |
-| [Async C++/Rust Interop][async-interop]                | ⛔       | ✅       | ⛔    | ⛔    |
+| [Async C++/Rust Interop][async-interop]                |          | ✅       | ◓     | ✅    |
 | *Basic Types*                                          | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | [Compatible type layouts][type-layouts]                | ◓        | ✅       | ✅    | ✅    |
 | [Match standard library type layouts][stdlib-layout]   | ◓        | ◓        | ◓     | ⛔    |
