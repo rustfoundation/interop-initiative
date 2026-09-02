@@ -29,22 +29,22 @@ interop tooling, including the Rust compiler:
 | [Async C++/Rust Interop][async-interop]                |          | ✅       | ◓     | ✅    |
 | *Basic Types*                                          | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | [Compatible type layouts][type-layouts]                | ◓        | ✅       | ✅    | ✅    |
-| [Match standard library type layouts][stdlib-layout]   | ◓        | ◓        | ◓     | ⛔    |
 | [Create a vector containing FFI types][cross-vec]      |          | ✅       | ⛔    | ✅    |
 | [Call C++ Iterators from Rust][cross-iter]             |          | ✅       | ✅    | ✅    |
-| [Use FFI string types][string-ffi]                     |          | ✅       | ✅    | ?     |
+| [Use FFI string types][string-ffi]                     |          | ✅       | ✅    | ✅    |
+| [Match standard library type layouts][stdlib-layout]   | ◓        | ◓        | ◓     |       |
 | [Lossless FFI integer type mappings][ffi-int-1to1]     | ◓        | ✅[^5]   |       |       |
-| [Define a C++ enum from Rust][c-enum-from-rust]        | ◓        | ✅       | ✅    | ⛔    |
 | [Convert Rust & C++ Result types][cross-result-types]  |          | ✅       | ✅    |       |
 | [Unify C++ forward decls to Rust types][cpp-fwd-decls] |          | ◓        | ◓     |       |
 | *Advanced Types*                                       | [rustc]  | [Crubit] | [cxx] | [Zngur] |
-| [Init C++ objects in-place in Rust][rust-inplace-init] | 🔁[^1]   | ✅       | ⛔    | ⛔    |
-| [Passing non-POD types][non-pod-passing]               | ◓        | ✅       | ✅    | ?     |
+| [Init C++ objects in-place in Rust][rust-inplace-init] | 🔁[^1]   | ✅       | ⛔    | ✅    |
+| [Passing non-POD types][non-pod-passing]               | ◓        | ✅       | ✅    |       |
 | [Use a prefix of the full Rust/C++ type][type-prefix]  | 🔁[^4]   | ✅       | ✅    | ?     |
 | [Rust Traits for C++ Types][traits-cpp-types]          | ◓        | ✅       | ◓?    | ✅    |
 | [Rust dyn traits from C++][dyn-traits-cpp]             | ?        | ◓        | ⛔    | ✅    |
 | [Cross-language class inheritance][cross-inherit]      |          | ◓        | ⛔    | ✅    |
-| [C++ templates with Rust types][cpp-templ-rust]        |          | ✅       | ⛔    | ⛔    |
+| [C++ templates with Rust types][cpp-templ-rust]        |          | ✅       | ⛔    | ✅    |
+| [Define a C++ enum from Rust][c-enum-from-rust]        | ◓[^8]    | ✅       | ✅    |       |
 | *Safety*                                               | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | [Cross-language object ownership][cross-own]           |          | ✅       | ◓     | ✅    |
 | [Lifetimes in C++ code][cpp-lifetimes]                 |          | ✅       | ◓     |       |
@@ -53,11 +53,11 @@ interop tooling, including the Rust compiler:
 | [Skip non-null pointer null checks][skip-null-checks]  | ?        | ✅       | ⛔    | ◓     |
 | [Allocator FFI compatibility][ffi-alloc]               | 🔁[^6]   | ✅       | ✅    | ✅    |
 | *Overloading*                                          | [rustc]  | [Crubit] | [cxx] | [Zngur] |
-| [Call an overloaded C++ function from Rust][overload]  | 🔁[^3]   | ◓        | ◓     | ?     |
+| [Call an overloaded C++ function from Rust][overload]  | 🔁[^3]   | ◓        | ◓     | ◓     |
 | [Type-dependent C++ call safety][cpp-type-dep-safe]    | 🔁[^2]   | ?        | ⛔    |       |
 | *Building & Linking*                                   | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | [Add Rust to existing C/C++ builds][rust-to-cpp-build] | ◓[^7]    | ◓        | ✅    | ✅    |
-| [Link Time Optimisation (LTO) Interop][lto-interop]    | ◓        | ✅       | ✅    | ?     |
+| [Link Time Optimisation (LTO) Interop][lto-interop]    | ◓        | ✅       | ✅    | ◓     |
 
 [traits-cpp-types]: https://github.com/rustfoundation/interop-initiative/issues/70
 [dyn-traits-cpp]: https://github.com/rustfoundation/interop-initiative/issues/69
@@ -94,3 +94,4 @@ interop tooling, including the Rust compiler:
 [^5]: [`ffi_11` crate](https://crates.io/crates/ffi_11)
 [^6]: [Rust Zulip discussions](https://rust-lang.zulipchat.com/#narrow/channel/197181-t-libs.2Fwg-allocators/topic/Near-term.20path.20to.20stabilizing.20an.20MVP.20of.20.60trait.20Allocator.60.3F/with/441587971)
 [^7]: [Rust stabilisation RFC](https://github.com/rust-lang/rfcs/pull/3993)
+[^8]: [Rust nightly lang experiment](https://github.com/rust-lang/rust/issues/156628)
