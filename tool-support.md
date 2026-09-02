@@ -57,7 +57,7 @@ interop tooling, including the Rust compiler:
 | [Type-dependent C++ call safety][cpp-type-dep-safe]    | 🔁[^2]   | ?        | ⛔    |       |
 | *Building & Linking*                                   | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | [Add Rust to existing C/C++ builds][rust-to-cpp-build] | ◓[^7]    | ◓        | ✅    | ✅    |
-| [Link Time Optimisation (LTO) Interop][lto-interop]    | ◓        | ✅       | ✅    | ◓     |
+| [Link Time Optimisation (LTO) Interop][lto-interop]    | ◓        | ✅       | ✅    | ✅    |
 
 [traits-cpp-types]: https://github.com/rustfoundation/interop-initiative/issues/70
 [dyn-traits-cpp]: https://github.com/rustfoundation/interop-initiative/issues/69
