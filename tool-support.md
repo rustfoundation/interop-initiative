@@ -47,7 +47,7 @@ interop tooling, including the Rust compiler:
 | [C++ templates with Rust types][cpp-templ-rust]        |          | ✅       | ⛔    | ⛔    |
 | *Safety*                                               | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | [Cross-language object ownership][cross-own]           |          | ✅       | ◓     | ✅    |
-| [Lifetimes in C++ code][cpp-lifetimes]                 |          | ◓        | ◓     |       |
+| [Lifetimes in C++ code][cpp-lifetimes]                 |          | ✅       | ◓     |       |
 | [FFI thread safety][ffi-thread-safe]                   | ◓        | ◓        | ?     | ?     |
 | [Rust & C++ unwinding compatibility][ffi-unwind]       | ◓        | ⛔       | ✅    | ✅    |
 | [Skip non-null pointer null checks][skip-null-checks]  | ?        | ✅       | ⛔    | ◓     |
