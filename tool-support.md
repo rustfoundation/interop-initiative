@@ -38,7 +38,7 @@ interop tooling, including the Rust compiler:
 | [Unify C++ forward decls to Rust types][cpp-fwd-decls] |          | ◓        | ◓     |       |
 | *Advanced Types*                                       | [rustc]  | [Crubit] | [cxx] | [Zngur] |
 | [Init C++ objects in-place in Rust][rust-inplace-init] | 🔁[^1]   | ✅       | ⛔    | ✅    |
-| [Passing non-POD types][non-pod-passing]               | ◓        | ✅       | ✅    |       |
+| [Passing non-POD types][non-pod-passing]               | ◓        | ✅       | ✅    | ✅    |
 | [Use a prefix of the full Rust/C++ type][type-prefix]  | 🔁[^4]   | ✅       | ✅    | ?     |
 | [Rust Traits for C++ Types][traits-cpp-types]          | ◓        | ✅       | ◓?    | ✅    |
 | [Rust dyn traits from C++][dyn-traits-cpp]             | ?        | ◓        | ⛔    | ✅    |
