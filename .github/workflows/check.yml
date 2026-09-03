@@ -48,7 +48,10 @@ jobs:
             echo "Testing Rust in '$EXAMPLE'..."
             pushd "$EXAMPLE"
             cargo test --all-targets --all-features
-            cargo test --doc --all-features
+            cargo metadata --format-version 1
+            if cargo metadata --format-version 1 | grep --fixed-strings '"crate_types":["lib"]' ; then
+                cargo test --doc --all-features
+            fi
             popd
             echo "'$EXAMPLE' Rust tests succeeded"
           done
