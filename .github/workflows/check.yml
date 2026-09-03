@@ -48,7 +48,9 @@ jobs:
             echo "Testing Rust in '$EXAMPLE'..."
             pushd "$EXAMPLE"
             cargo test --all-targets --all-features
-            if cargo metadata --format-version 1 | grep --fixed-strings '"crate_types":["lib"]' > /dev/null ; then
+            CRATE_TYPES=$(cargo metadata --format-version 1 | jq --arg crate $(basename "$EXAMPLE") '.packages.[] | select(.name == $crate) | .targets | map(.crate_types) | flatten | unique')
+            echo "crate types: $CRATE_TYPES"
+            if echo "$CRATE_TYPES" | grep '"bin"|"lib"' ; then
                 cargo test --doc --all-features
             fi
             popd
