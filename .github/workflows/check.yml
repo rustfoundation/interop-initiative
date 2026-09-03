@@ -48,6 +48,7 @@ jobs:
             echo "Testing Rust in '$EXAMPLE'..."
             pushd "$EXAMPLE"
             cargo test --all-targets --all-features
+            cargo test --doc --all-features
             popd
             echo "'$EXAMPLE' Rust tests succeeded"
           done
