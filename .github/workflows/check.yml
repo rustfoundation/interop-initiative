@@ -48,6 +48,13 @@ jobs:
             echo "Testing Rust in '$EXAMPLE'..."
             pushd "$EXAMPLE"
             cargo test --all-targets --all-features
+            CRATE_TYPES=$(cargo metadata --format-version 1 | jq --arg crate $(basename "$EXAMPLE") '.packages.[] | select(.name == $crate) | .targets | map(.crate_types) | flatten | unique')
+            if echo "$CRATE_TYPES" | grep -e '"lib"' ; then
+                echo "Running doc tests on crate types: $CRATE_TYPES"
+                cargo test --doc --all-features
+            else
+                echo "Not running doc tests, due to crate types: $CRATE_TYPES"
+            fi
             popd
             echo "'$EXAMPLE' Rust tests succeeded"
           done
