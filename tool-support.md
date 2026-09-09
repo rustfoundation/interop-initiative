@@ -4,14 +4,15 @@
 
 This table describes how various Rust/C++ interop use cases and problems are supported by major
 interop tooling, including the Rust compiler:
-* [Crubit][crubit] auto-generates a wide range of supported Rust and C++ interop bindings. Glue code and customisation is in the original source code, and the build system. Currently depends on the bazel build system, but [they are actively working on `cargo` integration][crubit-cargo].
-* [cxx]: auto-generates supported safe Rust and C++ interop bindings. Glue code is in the original source code, customisation and recent language features are limited. Compatible with [multiple build systems][cxx-multi-build], including `cargo`.
-* [Zngur][zngur]: auto-generates a wide range of declared Rust and C++ interop bindings, focusing on accessing Rust from C++. Glue code is in C++, as the more expressive language. Declarations and customisation are in `.zng` [IDL] files. Compatible with multiple build systems.
+* [Crubit][crubit] auto-generates a wide range of supported Rust and C++ interop bindings. Glue code and customisation is in the original source code, and the build system. Currently depends on [the nightly Rust compiler][crubit-nightly-rust] and the bazel build system, but [they are actively working on `cargo` integration][crubit-cargo].
+* [cxx]: auto-generates supported safe Rust and C++ interop bindings. Glue code is in the original source code, customisation and recent language features are limited. Compatible with [multiple build systems][cxx-multi-build], including `cargo`, and stable Rust.
+* [Zngur][zngur]: auto-generates a wide range of declared Rust and C++ interop bindings, focusing on accessing Rust from C++. Glue code is in C++, as the more expressive language. Declarations and customisation are in `.zng` [IDL] files. Compatible with multiple build systems, stable Rust, and multiple C++ compilers.
 
 [rustc]: https://rust-lang.org
 [crubit]: https://crubit.rs
 [cxx]: https://cxx.rs
 [zngur]: https://hkalbasi.github.io/zngur/
+[crubit-nightly-rust]: https://crubit.rs/overview/unstable_features.html
 [crubit-cargo]: https://crubit.rs/overview/status.html#usage-outside-of-google
 [cxx-multi-build]: https://cxx.rs/building.html
 [IDL]: https://en.wikipedia.org/wiki/Interface_description_language
