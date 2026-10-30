@@ -119,6 +119,12 @@ Rust Language/Library features:
 
 - [allocator_api](https://doc.rust-lang.org/nightly/unstable-book/library-features/allocator-api.html)
 
+### Known Workarounds
+
+- using the same allocator for both Rust and C++, typically by using clang and rustc based on the same underlying LLVM version
+   - this uses `#[global_allocator]` if linking using rustc, or unstable symbols if linking with external tools
+   - unstable symbols are a compatibility hazard
+
 TODO: fill in the remainder of this section
 
 ## Further Background
