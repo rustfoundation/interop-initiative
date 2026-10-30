@@ -98,6 +98,8 @@ One large project uses cross-language LTO with the same version of LLVM in `rust
 This has only caused one crash across millions of lines of code, and years of widespread operation.
 This was due to a `cxx` bug which did not mark a C++ type as having interior mutability in Rust.
 
+Other large projects LTO their Rust and C/C++ separately, then link the static libraries together, as a precaution against unexpected changes to LTO behaviour (potentially introducing unsoundness).
+
 TODO: fill in the remainder of this section
 
 ## Guide-level explanation
